@@ -13,8 +13,8 @@
 							<th>File name</th>
 						</tr>
 					</thead>
-					<tbody ng-cloak>
-						<tr ng-click="showImage(item)" height="23px" ng-repeat="item in listImages" style="cursor: pointer;">
+					<tbody>
+						<tr *ngFor='let item of listImages' (click)="ShowImage(item)" height="23px" style="cursor: pointer;">
 							<td>O</td>
 							<td></td>
 							<td>{{item.webkitRelativePath}}</td>
@@ -105,24 +105,9 @@
 	<br>
 	<textarea cols="48" rows="6" class="form-control"></textarea>
 	<br>
-	<input ng-change="uploadFile($event)" ng-model="data" type="file" style="display: none;" id="filepicker" name="fileList" webkitdirectory multiple />
+	<input type="file" style="display: none;" id="filepicker" name="fileList" webkitdirectory multiple />
 	<input type="hidden" id="fileUpload" name="">
-	<script type="text/javascript">
-		document.getElementById("filepicker").addEventListener("change", function(event) {
-			let files = event.target.files;
-			var objs = []
-			for (let i=0; i<files.length; i++) {
-				var item = {
-					name: files[i].name,
-					webkitRelativePath: files[i].webkitRelativePath,
-					type: files[i].type,
-					size: files[i].size,
-					fakePath: URL.createObjectURL(files[i])
-				}
-				objs.push(item)
-			};
-			$("#fileUpload").val(JSON.stringify(objs))
-			$("#eventShowListImage").click()
-		}, false);
-	</script>
+    <button class="hidden" (click)="ShowListImage()" id="eventShowListImage"></button>
 </div>
+
+	

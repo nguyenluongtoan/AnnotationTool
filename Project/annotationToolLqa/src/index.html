@@ -12,5 +12,25 @@
 </head>
 <body>
 	<app-root></app-root>
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			document.getElementById("filepicker").addEventListener("change", function(event) {
+				let files = event.target.files;
+				var objs = []
+				for (let i=0; i<files.length; i++) {
+					var item = {
+						name: files[i].name,
+						webkitRelativePath: files[i].webkitRelativePath,
+						type: files[i].type,
+						size: files[i].size,
+						fakePath: URL.createObjectURL(files[i])
+					}
+					objs.push(item)
+				};
+				$("#fileUpload").val(JSON.stringify(objs))
+				$("#eventShowListImage").click()
+			}, false);
+		});
+	</script>
 </body>
 </html>
