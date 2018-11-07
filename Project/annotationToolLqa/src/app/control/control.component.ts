@@ -10,9 +10,12 @@ export class ControlComponent implements OnInit {
 	heightOld = 100;
 	listImages = [];
 	constructor() { }
-	ngOnInit() {}
+	ngOnInit() {
+		this.DrawImage(this.widthOld,this.heightOld)
+	}
 	DrawImage(width,height){
-		var canvas = document.getElementById("myCanvas");
+		var canvas = <HTMLCanvasElement>document.getElementById("myCanvas");
+		console.log(canvas)
 		var ctx = canvas.getContext("2d");
 		var img = new Image();
 		img.src = $("#imageCar").attr("src");
@@ -33,6 +36,8 @@ export class ControlComponent implements OnInit {
 		this.DrawImage(this.widthOld,this.heightOld);
 	}
 	ShowListImage(){
-		this.listImages= JSON.parse($("#fileUpload").val())
+		var data = $("#fileUpload").val();
+		if(data != null && data != "")
+			this.listImages= JSON.parse(data.toString())
 	}
 }
