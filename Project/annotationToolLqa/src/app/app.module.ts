@@ -8,6 +8,7 @@ import { ControlComponent } from './control/control.component';
 import { BatComponent } from './bat/bat.component';
 import { CatComponent } from './cat/cat.component';
 import { RatComponent } from './rat/rat.component';
+import { MouseWheelDirective } from './control/mousewheel.directive';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RatComponent } from './rat/rat.component';
     ControlComponent,
     BatComponent,
     CatComponent,
-    RatComponent
+    RatComponent,
+    MouseWheelDirective
   ],
   imports: [
     BrowserModule,
