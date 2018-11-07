@@ -1,3 +1,128 @@
-<p>
-  control works!
-</p>
+<div>
+	<p>Draw style</p>
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+		<div class="col-md-12" style="margin-bottom: 10px">
+			<div style="height: 250px;overflow: auto;">
+				<table class="table table-border">
+					<thead>
+						<tr>
+							<th>Work</th>
+							<th>Review</th>
+							<th>File name</th>
+						</tr>
+					</thead>
+					<tbody ng-cloak>
+						<tr ng-click="showImage(item)" height="23px" ng-repeat="item in listImages" style="cursor: pointer;">
+							<td>O</td>
+							<td></td>
+							<td>{{item.webkitRelativePath}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-12" style="margin-bottom: 10px">
+			<form>Filter: 
+				<input type="text" class="filter" style="border: 1px solid #e0e0e0;padding: 5px;" width="100px">
+				<select class="all" style="border: 1px solid #e0e0e0;padding: 6px;">
+					<option selected>All</option>
+					<option>Left</option>
+					<option>Right</option>
+				</select>
+				<input type="submit" class="btn btn-primary" value="OK ALL">
+				<input type="submit" class="btn btn-success" value="Statistic">
+			</form>
+		</div>
+		<div class="col-md-12">
+			Function: 
+			<input type="submit" class="btn btn-default" value="<">
+			<input type="submit" class="btn btn-default" value="<<">
+			<input type="submit" onclick="$('#filepicker').click()" class="btn btn-default" value="O">
+			<input type="submit" class="btn btn-default" value=">">
+			<input type="submit" class="btn btn-default" value=">>">
+			<input type="submit" class="btn btn-primary" value="Submit">
+			<input type="checkbox" class="cb1">Follow mouse
+		</div>
+	</div>
+
+
+	<p>Image Area</p>
+	<p>Object Property</p>
+	<div class="tbl2">
+		<table class="table">
+			<tr align="center">
+				<td>Object</td>
+				<td width="80px">Key</td>
+				<td>Property</td>
+				<td>Value</td>
+			</tr>
+			<tr align="center">
+				<td>Vehicle</td>
+				<td>I</td>
+				<td>Issued</td>
+				<td></td>
+			</tr>
+			<tr align="center">
+				<td></td>
+				<td>2</td>
+				<td>Occluded</td>
+				<td></td>
+			</tr>
+			<tr align="center">
+				<td></td>
+				<td>3</td>
+				<td>Blinker state</td>
+				<td></td>
+			</tr>
+			<tr align="center">
+				<td></td>
+				<td>1</td>
+				<td>Type</td>
+				<td></td>
+			</tr>
+			<tr align="center">
+				<td></td>
+				<td>E</td>
+				<td>Truncated</td>
+				<td></td>
+			</tr>
+			<tr align="center">
+				<td></td>
+				<td>F</td>
+				<td>Direction</td>
+				<td></td>
+			</tr>
+
+		</table>
+	</div>
+
+	<p>Review</p>
+	<input type="checkbox" class="cb1" cheked>Mouse
+	<input type="radio" style="margin-left: 100px;">OK
+	<input type="radio" style="margin-left: 20px;" checked>NG
+	<br>
+	<textarea cols="48" rows="6" class="form-control"></textarea>
+	<br>
+	<input ng-change="uploadFile($event)" ng-model="data" type="file" style="display: none;" id="filepicker" name="fileList" webkitdirectory multiple />
+	<input type="hidden" id="fileUpload" name="">
+	<script type="text/javascript">
+		document.getElementById("filepicker").addEventListener("change", function(event) {
+			let files = event.target.files;
+			var objs = []
+			for (let i=0; i<files.length; i++) {
+				var item = {
+					name: files[i].name,
+					webkitRelativePath: files[i].webkitRelativePath,
+					type: files[i].type,
+					size: files[i].size,
+					fakePath: URL.createObjectURL(files[i])
+				}
+				objs.push(item)
+			};
+			$("#fileUpload").val(JSON.stringify(objs))
+			$("#eventShowListImage").click()
+		}, false);
+	</script>
+</div>
