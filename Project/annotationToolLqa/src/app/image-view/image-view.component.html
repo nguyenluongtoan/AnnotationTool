@@ -3,5 +3,5 @@
 	<div style="position: absolute;right: 16px;border: 2px solid red;">
 		<img id="imageCar" src="assets/images/ks.jpg" width="100px" height="100px" >
 	</div>
-	<canvas (mousedown)='MouseDownInCanvas($event)' (mouseup)='MouseUpInCanvas($event)' (mousemove)='MouseMoveInCanvas($event)' mouseWheel (mouseWheelUp)="MouseWheelUpFunc(event)" (mouseWheelDown)="MouseWheelDownFunc(event)" id="myCanvas" width="700" height="500" style="border: 1px solid #ddd;min-width: 100%;max-height: 800px;cursor: crosshair;"> </canvas>
+	<canvas tabindex="10" (keyup)="Keyup($event)" (dblclick)="MouseDoubleClick()" (mousedown)='MouseDownInCanvas($event)' (mouseup)='MouseUpInCanvas($event)' (mousemove)='MouseMoveInCanvas($event)' mouseWheel (mouseWheelUp)="MouseWheelUpFunc($event)" (mouseWheelDown)="MouseWheelDownFunc($event)" id="myCanvas" width="2000" height="1000" style="border: 1px solid #ddd;min-width: 100%;cursor: crosshair;"> </canvas>
 </div>
