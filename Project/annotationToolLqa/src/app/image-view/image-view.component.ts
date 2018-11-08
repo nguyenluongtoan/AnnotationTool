@@ -166,28 +166,50 @@ export class ImageViewComponent implements OnInit {
 		}
 	} 
 	Keyup(event){
+		// kiểm tra thao tác redo ctrl + z
 		if(event.ctrlKey && event.keyCode == 90){
+			// Nếu khối không có điểm nào và trong danh sách các khối có dữ liệu 
+			//=> lấy khối cuối cùng được thêm vào để thực hiên thao tác redo
 			if(this.points.length == 0 && this.datas.length > 0){
 				this.points = this.datas[this.datas.length - 1];
 			}
-			if(this.points.length > 0)
-				this.points.splice(this.points.length -1,1)
-
-			if(this.changeCanvas && this.points.length >= 0){
+			// Nếu có sự thay đổi theo chiều tiến của canvas 
+			// => xóa khối cuối cùng được thêm và tiếp tục xử lý khối đó
+			if(this.changeCanvas && this.datas.length > 0){ //(*)
 				this.datas.splice(this.datas.length - 1,1);
 			}
-			/*else{
-				this.datas[this.datas.length - 1] = this.points;
-			}*/
+			// Nếu khối có các điểm thì xóa điểm cuối cùng được thêm ( đường thằng)
+			if(this.points.length > 0)
+				this.points.splice(this.points.length -1,1)
+			// Nếu redo vào trường hợp không còn điểm và trong danh sách khối có dữ liệu thì cập nhật lại khối cuỗi cùng
+			// trong danh sách và loại bỏ khối cuối trong danh sách ( tương tự (*) )
+			if(this.points.length == 0 && this.datas.length > 0){
+				this.points = this.datas[this.datas.length - 1];
+				this.datas.splice(this.datas.length - 1,1);
+			}
+			// tải lại dữ liệu cũ ( đã loại bỏ khối cuối cùng được thêm)
 			this.LoadData();
+			// tải lại dữ liệu khối cuối cùng để tiếp tục thực hiện
 			this.ReloadShape(this.points,false)
+			// Trạng thái thay đổi canvas theo chiều ngược lại.
 			this.changeCanvas = false;
-			if(this.points.length == 1)
+			// cài đặt quá trình vẽ mới với khối đã được redo
+			// cập  nhật lại điểm đầu của khối và điểm gần nhất được cập nhật của khối
+			if(this.points.length == 1) // khối có 1 điểm => điểm đầu = điểm cuối
+			{
+				this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
 				this.draw.pointMouseDown.SetPoint(this.points[0].x,this.points[0].y);
-			else if(this.points.length > 1){
+			}
+			else if(this.points.length > 1){ // khối có nhiều điểm => điểm đầu = đầu ds, điểm cuối = cuối ds
+				this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
 				this.draw.pointMouseDown.SetPoint(this.points[this.points.length - 1].x,this.points[this.points.length - 1].y);
 			}
-			this.statusDrawLine = 1;
+			// cài đật trạng thái vẽ ( điểm kế tiếp là điểm đầu/ điểm cuối)
+			if(this.datas.length == 0 && this.points.length == 0) // toàn bộ dữ liệu trống
+				this.statusDrawLine = 0;
+			else // dữ liệu không trống => tiếp tục vẽ
+				this.statusDrawLine = 1;
+
 		}
 	}
 }
