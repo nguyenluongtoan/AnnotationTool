@@ -13,7 +13,7 @@ export class ControlComponent implements OnInit {
 	ngOnInit() {}
 	ShowImage(obj){
 		$("#imageCar").attr("src",obj.fakePath);
-		this.imageViewComponent.DrawImage(100,100,true);
+		this.imageViewComponent.DrawImage(true);
 	}
 	ShowListImage(){
 		var data = $("#fileUpload").val();

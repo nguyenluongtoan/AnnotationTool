@@ -2,7 +2,6 @@ export class Draw{
 	public zoom = 100; //
 	public static xStart = 0;
 	public static yStart = 0;
-	public static countMouseWhell = 0;
 	public pointMouseDown: Point = new Point(0,0);
 	public pointMouseUp: Point = new Point(0,0);
 }

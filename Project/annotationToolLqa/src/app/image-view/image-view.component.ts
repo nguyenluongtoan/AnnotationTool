@@ -11,17 +11,28 @@ export class ImageViewComponent implements OnInit {
 	public draw: Draw = new Draw();
 	acceptMoveImage = false;
 	statusDrawLine = 0;
+	statusMoveImage = false;
 	changeCanvas = true;
 	public points: Array<Point> = [];
 	public datas: Array<Array<Point>> = [];
+	public pointsClone: Array<Point> = [];
+	public datasClone: Array<Array<Point>> = [];
 	firstPoint = new Point(0,0);
+	firstPointMove = new Point(0,0);
+	endPointMove = new Point(0,0);
+	statusFirstPointMove = true;
+	widthImageDraw = 0;
+	heightImageDraw = 0;
 	constructor() { }
 	ngOnInit() {
-		this.DrawImage(this.draw.zoom,this.draw.zoom)
+		var img = new Image();
+		img.src = $("#imageCar").attr("src");
+		this.widthImageDraw = img.width;
+		this.heightImageDraw= img.height;
+		this.DrawImage()
 	}
 	ReloadImage(){
-		var newSize = (this.draw.zoom + Draw.countMouseWhell);
-		this.DrawImage(newSize,newSize);
+		this.DrawImage();
 	}
 	ReloadShape(points,round = true){
 		if(points.length == 1){
@@ -44,6 +55,7 @@ export class ImageViewComponent implements OnInit {
 	LoadData(){
 		this.ReloadImage();
 		this.ReloadLineDraw(this.datas);
+		console.log(this.datas)
 	}
 	DrawLine(x,y,x2,y2){
 		var c= <HTMLCanvasElement>document.getElementById("myCanvas");
@@ -57,15 +69,56 @@ export class ImageViewComponent implements OnInit {
 		this.DrawRat(x-2,y-2,4,4);
 		this.DrawRat(x2-2,y2-2,4,4);
 	}
+	TranslatePoint(x,y){
+		for(var j=0; j< this.points.length;j++){
+			this.points[j].x += x;
+			this.points[j].y += y;
+		}
+	}
+	TranslateAllData(x,y){
+		for(var i = 0;i < this.datas.length;i++){
+			for(var j=0; j< this.datas[i].length;j++){
+				this.datas[i][j].x += x;
+				this.datas[i][j].y += y;
+			}
+		}	
+	}
+	ZoomAllData(){
+		for(var i = 0;i < this.datas.length;i++){
+			for(var j=0; j< this.datas[i].length;j++){
+				this.datas[i][j].x *= (100 + this.draw.zoom)/100 ;
+				this.datas[i][j].y *= (100 + this.draw.zoom)/100 ;
+			}
+		}	
+	}
+	SetUpFirstPointDraw(){
+		if(this.points.length == 1) 
+		{
+			this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
+		}
+		else if(this.points.length > 1){ 
+			this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
+		}
+
+	}
+	SetUpEndPointDraw(){
+		if(this.points.length == 1)
+		{
+			this.draw.pointMouseDown.SetPoint(this.points[0].x,this.points[0].y);
+		}
+		else if(this.points.length > 1){ 
+			this.draw.pointMouseDown.SetPoint(this.points[this.points.length - 1].x,this.points[this.points.length - 1].y);
+		}
+
+	}
 	DrawRat(x,y,width,height){
 		var canvas = <HTMLCanvasElement>document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
 		ctx.strokeRect(x,y,width,height);
 	}
-	DrawImage(width,height,newImage = false){
+	DrawImage(newImage = false){
 		if(newImage)
 		{
-			Draw.countMouseWhell = 0;
 			Draw.xStart = 0;
 			Draw.yStart = 0;
 		}
@@ -73,14 +126,12 @@ export class ImageViewComponent implements OnInit {
 		var ctx = canvas.getContext("2d");
 		var img = new Image();
 		img.src = $("#imageCar").attr("src");
-		var widthImageDraw = img.width * width/100;
-		var heightImageDraw= img.height * height/100;
 		ctx.save();
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.restore();
 		ctx.fillText(Draw.xStart+":"+Draw.yStart,Draw.xStart,Draw.yStart);
-		ctx.drawImage(img, Draw.xStart, Draw.yStart,widthImageDraw ,heightImageDraw);
-		ctx.strokeRect(Draw.xStart, Draw.yStart,widthImageDraw,heightImageDraw);
+		ctx.drawImage(img, Draw.xStart, Draw.yStart,this.widthImageDraw ,this.heightImageDraw);
+		ctx.strokeRect(Draw.xStart, Draw.yStart,this.widthImageDraw,this.heightImageDraw);
 		/*setTimeout(function () {
 			ctx.save();
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -93,32 +144,31 @@ export class ImageViewComponent implements OnInit {
 	MouseWheelUpFunc(event) {
 		if(!event.shiftKey)
 			return;
-		Draw.countMouseWhell+=3;
-		var newSize = (this.draw.zoom + Draw.countMouseWhell);
-		if(newSize > 500){
-			Draw.countMouseWhell = 400;
-			newSize = 500;
-		}
-		else
-			this.LoadData()
+		this.draw.zoom = 1;
+		this.widthImageDraw *= (100 + this.draw.zoom)/100 ;
+		this.heightImageDraw *= (100 + this.draw.zoom)/100 ;
+		this.ZoomAllData();
+		this.LoadData();
+		this.ReloadShape(this.points,false)
 	}
 	MouseWheelDownFunc(event) {
 		if(!event.shiftKey)
 			return;
-		Draw.countMouseWhell-=3;
-		var newSize = (this.draw.zoom + Draw.countMouseWhell);
-		if(newSize < 10){
-			Draw.countMouseWhell = -90;
-			newSize = 10;
-		}
-		else
-			this.LoadData()
+		this.draw.zoom = -1;
+		this.widthImageDraw *= (100 + this.draw.zoom)/100 ;
+		this.heightImageDraw *= (100 + this.draw.zoom)/100 ;
+		this.ZoomAllData();
+		this.LoadData();
+		this.ReloadShape(this.points,false)
 	}
 	MouseDownInCanvas(event){
 		var x = event.clientX < 0? 0: event.clientX;
 		var y = event.clientY < 0? 0: event.clientY;
 		if(event.shiftKey)
 		{
+			if(this.statusFirstPointMove){
+				this.statusFirstPointMove = false;
+			}
 			this.acceptMoveImage = true;
 		}
 		else{
@@ -131,12 +181,16 @@ export class ImageViewComponent implements OnInit {
 			}
 			else if(this.statusDrawLine == 1){
 				var point = new Point(x,y);
+				if(this.statusMoveImage)
+					this.DrawLine(this.points[this.points.length - 1].x,this.points[this.points.length - 1].y,x,y);	
+				else
+					this.DrawLine(this.draw.pointMouseDown.x,this.draw.pointMouseDown.y,x,y);
 				this.points.push(point);
-				this.DrawLine(this.draw.pointMouseDown.x,this.draw.pointMouseDown.y,x,y);	
 			}
 		}
 		this.draw.pointMouseDown.x = x;
 		this.draw.pointMouseDown.y = y;
+		this.changeCanvas = false;
 	} 
 	MouseDoubleClick(){
 		var x = this.firstPoint.x;
@@ -146,8 +200,10 @@ export class ImageViewComponent implements OnInit {
 		this.draw.pointMouseDown.y = y;
 		this.statusDrawLine = 0;
 		this.datas.push(this.points);
+		this.points = []
 		console.log(this.datas)
 		this.changeCanvas = true;
+		this.statusMoveImage = false;
 	}
 	MouseUpInCanvas(event){
 		this.acceptMoveImage = false;
@@ -158,11 +214,26 @@ export class ImageViewComponent implements OnInit {
 		var xCurrent = event.clientX < 0? 0: event.clientX ;
 		var yCurrent = event.clientY < 0? 0: event.clientY;
 		if(this.acceptMoveImage){
-			Draw.xStart = xCurrent - this.draw.pointMouseDown.x + Draw.xStart;
-			Draw.yStart = yCurrent - this.draw.pointMouseDown.y + Draw.yStart;
+			var translateX = xCurrent - this.draw.pointMouseDown.x;
+			var translateY = yCurrent - this.draw.pointMouseDown.y
+			Draw.xStart = translateX + Draw.xStart;
+			Draw.yStart = translateY + Draw.yStart;
+			this.TranslateAllData(translateX,translateY)
 			this.LoadData()
 			this.draw.pointMouseDown.SetPoint(xCurrent,yCurrent);
-			this.statusDrawLine = 0;
+			this.TranslatePoint(translateX,translateY)
+			this.ReloadShape(this.points,false);
+			if(this.points.length == 0)
+			{
+				this.statusDrawLine = 0;
+			}
+			else 
+			{
+				this.statusMoveImage = true;
+				this.statusDrawLine = 1;
+			}
+			if(this.points.length == 0)
+				this.changeCanvas = true;
 		}
 	} 
 	Keyup(event){
@@ -195,21 +266,13 @@ export class ImageViewComponent implements OnInit {
 			this.changeCanvas = false;
 			// cài đặt quá trình vẽ mới với khối đã được redo
 			// cập  nhật lại điểm đầu của khối và điểm gần nhất được cập nhật của khối
-			if(this.points.length == 1) // khối có 1 điểm => điểm đầu = điểm cuối
-			{
-				this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
-				this.draw.pointMouseDown.SetPoint(this.points[0].x,this.points[0].y);
-			}
-			else if(this.points.length > 1){ // khối có nhiều điểm => điểm đầu = đầu ds, điểm cuối = cuối ds
-				this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
-				this.draw.pointMouseDown.SetPoint(this.points[this.points.length - 1].x,this.points[this.points.length - 1].y);
-			}
+			this.SetUpFirstPointDraw();
+			this.SetUpEndPointDraw();
 			// cài đật trạng thái vẽ ( điểm kế tiếp là điểm đầu/ điểm cuối)
 			if(this.datas.length == 0 && this.points.length == 0) // toàn bộ dữ liệu trống
 				this.statusDrawLine = 0;
 			else // dữ liệu không trống => tiếp tục vẽ
 				this.statusDrawLine = 1;
-
 		}
 	}
 }
