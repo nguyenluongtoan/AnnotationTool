@@ -55,7 +55,6 @@ export class ImageViewComponent implements OnInit {
 	LoadData(){
 		this.ReloadImage();
 		this.ReloadLineDraw(this.datas);
-		console.log(this.datas)
 	}
 	DrawLine(x,y,x2,y2){
 		var c= <HTMLCanvasElement>document.getElementById("myCanvas");
@@ -83,13 +82,20 @@ export class ImageViewComponent implements OnInit {
 			}
 		}	
 	}
+	ZoomPoint(points){
+		for(var j=0; j< points.length;j++){
+			points[j].x = (points[j].x - Draw.xStart) * (100 + this.draw.zoom)/100 + Draw.xStart;
+			points[j].y = (points[j].y - Draw.yStart) * (100 + this.draw.zoom)/100 + Draw.yStart;
+		}
+	}
 	ZoomAllData(){
 		for(var i = 0;i < this.datas.length;i++){
 			for(var j=0; j< this.datas[i].length;j++){
-				this.datas[i][j].x *= (100 + this.draw.zoom)/100 ;
-				this.datas[i][j].y *= (100 + this.draw.zoom)/100 ;
+				this.datas[i][j].x = (this.datas[i][j].x - Draw.xStart) * (100 + this.draw.zoom)/100 + Draw.xStart;
+				this.datas[i][j].y = (this.datas[i][j].y - Draw.yStart) * (100 + this.draw.zoom)/100 + Draw.yStart;
 			}
 		}	
+		this.ZoomPoint(this.points);
 	}
 	SetUpFirstPointDraw(){
 		if(this.points.length == 1) 
@@ -132,14 +138,6 @@ export class ImageViewComponent implements OnInit {
 		ctx.fillText(Draw.xStart+":"+Draw.yStart,Draw.xStart,Draw.yStart);
 		ctx.drawImage(img, Draw.xStart, Draw.yStart,this.widthImageDraw ,this.heightImageDraw);
 		ctx.strokeRect(Draw.xStart, Draw.yStart,this.widthImageDraw,this.heightImageDraw);
-		/*setTimeout(function () {
-			ctx.save();
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			ctx.restore();
-			ctx.fillText(Draw.xStart+":"+Draw.yStart,Draw.xStart,Draw.yStart);
-			ctx.drawImage(img, Draw.xStart, Draw.yStart,widthImageDraw ,heightImageDraw);
-			ctx.strokeRect(Draw.xStart, Draw.yStart,widthImageDraw,heightImageDraw);
-		}, 1);*/
 	}
 	MouseWheelUpFunc(event) {
 		if(!event.shiftKey)
