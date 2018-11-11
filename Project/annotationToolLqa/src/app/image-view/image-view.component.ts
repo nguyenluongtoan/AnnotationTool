@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import {Draw} from '../draw'
 import {Point} from '../draw'
+import {ControlDraw} from '../draw'
 
 @Component({
 	selector: 'app-image-view',
@@ -8,27 +9,12 @@ import {Point} from '../draw'
 	styleUrls: ['./image-view.component.css']
 })
 export class ImageViewComponent implements OnInit {
-	public draw: Draw = new Draw();
-	acceptMoveImage = false;
-	statusDrawLine = 0;
-	statusMoveImage = false;
-	changeCanvas = true;
-	public points: Array<Point> = [];
-	public datas: Array<Array<Point>> = [];
-	public pointsClone: Array<Point> = [];
-	public datasClone: Array<Array<Point>> = [];
-	firstPoint = new Point(0,0);
-	firstPointMove = new Point(0,0);
-	endPointMove = new Point(0,0);
-	statusFirstPointMove = true;
-	widthImageDraw = 0;
-	heightImageDraw = 0;
 	constructor() { }
 	ngOnInit() {
 		var img = new Image();
 		img.src = $("#imageCar").attr("src");
-		this.widthImageDraw = img.width;
-		this.heightImageDraw= img.height;
+		Draw.widthImageDraw = img.width;
+		Draw.heightImageDraw= img.height;
 		this.DrawImage()
 	}
 	ReloadImage(){
@@ -54,7 +40,7 @@ export class ImageViewComponent implements OnInit {
 	}
 	LoadData(){
 		this.ReloadImage();
-		this.ReloadLineDraw(this.datas);
+		this.ReloadLineDraw(ControlDraw.datas);
 	}
 	DrawLine(x,y,x2,y2){
 		var c= <HTMLCanvasElement>document.getElementById("myCanvas");
@@ -69,51 +55,52 @@ export class ImageViewComponent implements OnInit {
 		this.DrawRat(x2-2,y2-2,4,4);
 	}
 	TranslatePoint(x,y){
-		for(var j=0; j< this.points.length;j++){
-			this.points[j].x += x;
-			this.points[j].y += y;
+		for(var j=0; j< ControlDraw.points.length;j++){
+			ControlDraw.points[j].x += x;
+			ControlDraw.points[j].y += y;
 		}
 	}
 	TranslateAllData(x,y){
-		for(var i = 0;i < this.datas.length;i++){
-			for(var j=0; j< this.datas[i].length;j++){
-				this.datas[i][j].x += x;
-				this.datas[i][j].y += y;
+		for(var i = 0;i < ControlDraw.datas.length;i++){
+			for(var j=0; j< ControlDraw.datas[i].length;j++){
+				ControlDraw.datas[i][j].x += x;
+				ControlDraw.datas[i][j].y += y;
 			}
 		}	
 	}
 	ZoomPoint(points){
 		for(var j=0; j< points.length;j++){
-			points[j].x = (points[j].x - Draw.xStart) * (100 + this.draw.zoom)/100 + Draw.xStart;
-			points[j].y = (points[j].y - Draw.yStart) * (100 + this.draw.zoom)/100 + Draw.yStart;
+			points[j].x = (points[j].x - Draw.xStart) * (100 + ControlDraw.draw.zoom)/100 + Draw.xStart;
+			points[j].y = (points[j].y - Draw.yStart) * (100 + ControlDraw.draw.zoom)/100 + Draw.yStart;
 		}
+		this.SetUpEndPointDraw();
 	}
 	ZoomAllData(){
-		for(var i = 0;i < this.datas.length;i++){
-			for(var j=0; j< this.datas[i].length;j++){
-				this.datas[i][j].x = (this.datas[i][j].x - Draw.xStart) * (100 + this.draw.zoom)/100 + Draw.xStart;
-				this.datas[i][j].y = (this.datas[i][j].y - Draw.yStart) * (100 + this.draw.zoom)/100 + Draw.yStart;
+		for(var i = 0;i < ControlDraw.datas.length;i++){
+			for(var j=0; j< ControlDraw.datas[i].length;j++){
+				ControlDraw.datas[i][j].x = (ControlDraw.datas[i][j].x - Draw.xStart) * (100 + ControlDraw.draw.zoom)/100 + Draw.xStart;
+				ControlDraw.datas[i][j].y = (ControlDraw.datas[i][j].y - Draw.yStart) * (100 + ControlDraw.draw.zoom)/100 + Draw.yStart;
 			}
 		}	
-		this.ZoomPoint(this.points);
+		this.ZoomPoint(ControlDraw.points);
 	}
 	SetUpFirstPointDraw(){
-		if(this.points.length == 1) 
+		if(ControlDraw.points.length == 1) 
 		{
-			this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
+			ControlDraw.firstPoint.SetPoint(ControlDraw.points[0].x,ControlDraw.points[0].y);
 		}
-		else if(this.points.length > 1){ 
-			this.firstPoint.SetPoint(this.points[0].x,this.points[0].y);
+		else if(ControlDraw.points.length > 1){ 
+			ControlDraw.firstPoint.SetPoint(ControlDraw.points[0].x,ControlDraw.points[0].y);
 		}
 
 	}
 	SetUpEndPointDraw(){
-		if(this.points.length == 1)
+		if(ControlDraw.points.length == 1)
 		{
-			this.draw.pointMouseDown.SetPoint(this.points[0].x,this.points[0].y);
+			ControlDraw.draw.pointMouseDown.SetPoint(ControlDraw.points[0].x,ControlDraw.points[0].y);
 		}
-		else if(this.points.length > 1){ 
-			this.draw.pointMouseDown.SetPoint(this.points[this.points.length - 1].x,this.points[this.points.length - 1].y);
+		else if(ControlDraw.points.length > 1){ 
+			ControlDraw.draw.pointMouseDown.SetPoint(ControlDraw.points[ControlDraw.points.length - 1].x,ControlDraw.points[ControlDraw.points.length - 1].y);
 		}
 
 	}
@@ -136,102 +123,98 @@ export class ImageViewComponent implements OnInit {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.restore();
 		ctx.fillText(Draw.xStart+":"+Draw.yStart,Draw.xStart,Draw.yStart);
-		ctx.drawImage(img, Draw.xStart, Draw.yStart,this.widthImageDraw ,this.heightImageDraw);
-		ctx.strokeRect(Draw.xStart, Draw.yStart,this.widthImageDraw,this.heightImageDraw);
+		ctx.drawImage(img, Draw.xStart, Draw.yStart,Draw.widthImageDraw ,Draw.heightImageDraw);
+		ctx.strokeRect(Draw.xStart, Draw.yStart,Draw.widthImageDraw,Draw.heightImageDraw);
 	}
 	MouseWheelUpFunc(event) {
 		if(!event.shiftKey)
 			return;
-		this.draw.zoom = 1;
-		this.widthImageDraw *= (100 + this.draw.zoom)/100 ;
-		this.heightImageDraw *= (100 + this.draw.zoom)/100 ;
+		ControlDraw.draw.zoom = 1;
+		Draw.widthImageDraw *= (100 + ControlDraw.draw.zoom)/100 ;
+		Draw.heightImageDraw *= (100 + ControlDraw.draw.zoom)/100 ;
 		this.ZoomAllData();
 		this.LoadData();
-		this.ReloadShape(this.points,false)
+		this.ReloadShape(ControlDraw.points,false)
 	}
 	MouseWheelDownFunc(event) {
 		if(!event.shiftKey)
 			return;
-		this.draw.zoom = -1;
-		this.widthImageDraw *= (100 + this.draw.zoom)/100 ;
-		this.heightImageDraw *= (100 + this.draw.zoom)/100 ;
+		ControlDraw.draw.zoom = -1;
+		Draw.widthImageDraw *= (100 + ControlDraw.draw.zoom)/100 ;
+		Draw.heightImageDraw *= (100 + ControlDraw.draw.zoom)/100 ;
 		this.ZoomAllData();
 		this.LoadData();
-		this.ReloadShape(this.points,false)
+		this.ReloadShape(ControlDraw.points,false)
 	}
 	MouseDownInCanvas(event){
 		var x = event.clientX < 0? 0: event.clientX;
 		var y = event.clientY < 0? 0: event.clientY;
 		if(event.shiftKey)
 		{
-			if(this.statusFirstPointMove){
-				this.statusFirstPointMove = false;
-			}
-			this.acceptMoveImage = true;
+			ControlDraw.acceptMoveImage = true;
 		}
 		else{
-			if(this.statusDrawLine == 0){
-				this.points = []
-				this.firstPoint = new Point(x,y);
-				this.points.push(this.firstPoint);
-				this.statusDrawLine = 1;
+			if(ControlDraw.statusDrawLine == 0){
+				ControlDraw.points = []
+				ControlDraw.firstPoint = new Point(x,y);
+				ControlDraw.points.push(ControlDraw.firstPoint);
+				ControlDraw.statusDrawLine = 1;
 				this.DrawLine(x,y,x,y);
 			}
-			else if(this.statusDrawLine == 1){
+			else if(ControlDraw.statusDrawLine == 1){
 				var point = new Point(x,y);
-				if(this.statusMoveImage)
-					this.DrawLine(this.points[this.points.length - 1].x,this.points[this.points.length - 1].y,x,y);	
+				if(ControlDraw.statusMoveImage)
+					this.DrawLine(ControlDraw.points[ControlDraw.points.length - 1].x,ControlDraw.points[ControlDraw.points.length - 1].y,x,y);	
 				else
-					this.DrawLine(this.draw.pointMouseDown.x,this.draw.pointMouseDown.y,x,y);
-				this.points.push(point);
+					this.DrawLine(ControlDraw.draw.pointMouseDown.x,ControlDraw.draw.pointMouseDown.y,x,y);
+				ControlDraw.points.push(point);
 			}
 		}
-		this.draw.pointMouseDown.x = x;
-		this.draw.pointMouseDown.y = y;
-		this.changeCanvas = false;
+		ControlDraw.draw.pointMouseDown.x = x;
+		ControlDraw.draw.pointMouseDown.y = y;
+		ControlDraw.changeCanvas = false;
 	} 
 	MouseDoubleClick(){
-		var x = this.firstPoint.x;
-		var y = this.firstPoint.y;
-		this.DrawLine(this.draw.pointMouseDown.x,this.draw.pointMouseDown.y,x,y);
-		this.draw.pointMouseDown.x = x;
-		this.draw.pointMouseDown.y = y;
-		this.statusDrawLine = 0;
-		this.datas.push(this.points);
-		this.points = []
-		console.log(this.datas)
-		this.changeCanvas = true;
-		this.statusMoveImage = false;
+		var x = ControlDraw.firstPoint.x;
+		var y = ControlDraw.firstPoint.y;
+		this.DrawLine(ControlDraw.draw.pointMouseDown.x,ControlDraw.draw.pointMouseDown.y,x,y);
+		ControlDraw.draw.pointMouseDown.x = x;
+		ControlDraw.draw.pointMouseDown.y = y;
+		ControlDraw.statusDrawLine = 0;
+		ControlDraw.datas.push(ControlDraw.points);
+		ControlDraw.points = []
+		ControlDraw.changeCanvas = true;
+		ControlDraw.statusMoveImage = false;
 	}
 	MouseUpInCanvas(event){
-		this.acceptMoveImage = false;
-		this.draw.pointMouseUp.x = event.clientX < 0? 0: event.clientX ;
-		this.draw.pointMouseUp.y = event.clientY < 0? 0: event.clientY;
+		ControlDraw.acceptMoveImage = false;
+		ControlDraw.draw.pointMouseUp.x = event.clientX < 0? 0: event.clientX ;
+		ControlDraw.draw.pointMouseUp.y = event.clientY < 0? 0: event.clientY;
 	} 
 	MouseMoveInCanvas(event){
 		var xCurrent = event.clientX < 0? 0: event.clientX ;
 		var yCurrent = event.clientY < 0? 0: event.clientY;
-		if(this.acceptMoveImage){
-			var translateX = xCurrent - this.draw.pointMouseDown.x;
-			var translateY = yCurrent - this.draw.pointMouseDown.y
+		if(ControlDraw.acceptMoveImage){
+			var translateX = xCurrent - ControlDraw.draw.pointMouseDown.x;
+			var translateY = yCurrent - ControlDraw.draw.pointMouseDown.y
 			Draw.xStart = translateX + Draw.xStart;
 			Draw.yStart = translateY + Draw.yStart;
 			this.TranslateAllData(translateX,translateY)
 			this.LoadData()
-			this.draw.pointMouseDown.SetPoint(xCurrent,yCurrent);
+			ControlDraw.draw.pointMouseDown.SetPoint(xCurrent,yCurrent);
 			this.TranslatePoint(translateX,translateY)
-			this.ReloadShape(this.points,false);
-			if(this.points.length == 0)
+			this.ReloadShape(ControlDraw.points,false);
+			if(ControlDraw.points.length == 0)
 			{
-				this.statusDrawLine = 0;
+				ControlDraw.statusDrawLine = 0;
 			}
 			else 
 			{
-				this.statusMoveImage = true;
-				this.statusDrawLine = 1;
+				ControlDraw.statusMoveImage = true;
+				ControlDraw.statusDrawLine = 1;
 			}
-			if(this.points.length == 0)
-				this.changeCanvas = true;
+			if(ControlDraw.points.length == 0)
+				ControlDraw.changeCanvas = true;
 		}
 	} 
 	Keyup(event){
@@ -239,38 +222,38 @@ export class ImageViewComponent implements OnInit {
 		if(event.ctrlKey && event.keyCode == 90){
 			// Nếu khối không có điểm nào và trong danh sách các khối có dữ liệu 
 			//=> lấy khối cuối cùng được thêm vào để thực hiên thao tác redo
-			if(this.points.length == 0 && this.datas.length > 0){
-				this.points = this.datas[this.datas.length - 1];
+			if(ControlDraw.points.length == 0 && ControlDraw.datas.length > 0){
+				ControlDraw.points = ControlDraw.datas[ControlDraw.datas.length - 1];
 			}
 			// Nếu có sự thay đổi theo chiều tiến của canvas 
 			// => xóa khối cuối cùng được thêm và tiếp tục xử lý khối đó
-			if(this.changeCanvas && this.datas.length > 0){ //(*)
-				this.datas.splice(this.datas.length - 1,1);
+			if(ControlDraw.changeCanvas && ControlDraw.datas.length > 0){ //(*)
+				ControlDraw.datas.splice(ControlDraw.datas.length - 1,1);
 			}
 			// Nếu khối có các điểm thì xóa điểm cuối cùng được thêm ( đường thằng)
-			if(this.points.length > 0)
-				this.points.splice(this.points.length -1,1)
+			if(ControlDraw.points.length > 0)
+				ControlDraw.points.splice(ControlDraw.points.length -1,1)
 			// Nếu redo vào trường hợp không còn điểm và trong danh sách khối có dữ liệu thì cập nhật lại khối cuỗi cùng
 			// trong danh sách và loại bỏ khối cuối trong danh sách ( tương tự (*) )
-			if(this.points.length == 0 && this.datas.length > 0){
-				this.points = this.datas[this.datas.length - 1];
-				this.datas.splice(this.datas.length - 1,1);
+			if(ControlDraw.points.length == 0 && ControlDraw.datas.length > 0){
+				ControlDraw.points = ControlDraw.datas[ControlDraw.datas.length - 1];
+				ControlDraw.datas.splice(ControlDraw.datas.length - 1,1);
 			}
 			// tải lại dữ liệu cũ ( đã loại bỏ khối cuối cùng được thêm)
 			this.LoadData();
 			// tải lại dữ liệu khối cuối cùng để tiếp tục thực hiện
-			this.ReloadShape(this.points,false)
+			this.ReloadShape(ControlDraw.points,false)
 			// Trạng thái thay đổi canvas theo chiều ngược lại.
-			this.changeCanvas = false;
+			ControlDraw.changeCanvas = false;
 			// cài đặt quá trình vẽ mới với khối đã được redo
 			// cập  nhật lại điểm đầu của khối và điểm gần nhất được cập nhật của khối
 			this.SetUpFirstPointDraw();
 			this.SetUpEndPointDraw();
 			// cài đật trạng thái vẽ ( điểm kế tiếp là điểm đầu/ điểm cuối)
-			if(this.datas.length == 0 && this.points.length == 0) // toàn bộ dữ liệu trống
-				this.statusDrawLine = 0;
+			if(ControlDraw.datas.length == 0 && ControlDraw.points.length == 0) // toàn bộ dữ liệu trống
+				ControlDraw.statusDrawLine = 0;
 			else // dữ liệu không trống => tiếp tục vẽ
-				this.statusDrawLine = 1;
+				ControlDraw.statusDrawLine = 1;
 		}
 	}
 }
