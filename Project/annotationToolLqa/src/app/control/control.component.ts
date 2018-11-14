@@ -1,8 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import {ImageViewComponent} from '../image-view/image-view.component'
 import {Draw} from '../draw'
 import {ControlDraw} from '../draw'
+import { BrowserModule } from '@angular/platform-browser';
 @Component({
 	selector: 'app-control',
 	templateUrl: './control.component.html',
@@ -10,7 +11,9 @@ import {ControlDraw} from '../draw'
 })
 export class ControlComponent implements OnInit {	
 	public imageViewComponent: ImageViewComponent = new ImageViewComponent();
+	public listImagesBase = [];
 	public listImages = [];
+	keyFilter: string = '';
 	constructor() { }
 	ngOnInit() {}
 	ShowImage(obj){
@@ -27,7 +30,15 @@ export class ControlComponent implements OnInit {
 	ShowListImage(){
 		var data = $("#fileUpload").val();
 		if(data != null && data != "")
-			this.listImages= JSON.parse(data.toString())
+			{
+				this.listImages= JSON.parse(data.toString())
+				this.listImagesBase= JSON.parse(data.toString())
+			}
+			$("#fileUpload").val('')
+	}
+	FilterData(searchValue : string){
+		this.listImages = this.listImagesBase.filter(x=>x.webkitRelativePath.indexOf(searchValue)>= 0)
+		console.log(this.listImages)
 	}
 }
 
