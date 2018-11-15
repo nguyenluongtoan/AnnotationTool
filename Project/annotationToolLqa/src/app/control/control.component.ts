@@ -30,15 +30,18 @@ export class ControlComponent implements OnInit {
 	ShowListImage(){
 		var data = $("#fileUpload").val();
 		if(data != null && data != "")
-			{
-				this.listImages= JSON.parse(data.toString())
-				this.listImagesBase= JSON.parse(data.toString())
-			}
-			$("#fileUpload").val('')
+		{
+			this.listImages= JSON.parse(data.toString())
+			this.listImagesBase= JSON.parse(data.toString())
+		}
+		$("#fileUpload").val('')
 	}
 	FilterData(searchValue : string){
 		this.listImages = this.listImagesBase.filter(x=>x.webkitRelativePath.indexOf(searchValue)>= 0)
 		console.log(this.listImages)
+	}
+	ChangeTypeDraw(type){
+		Draw.typeDraw = type;
 	}
 }
 

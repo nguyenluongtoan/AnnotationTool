@@ -9,50 +9,37 @@ import {ControlDraw} from '../draw'
 	styleUrls: ['./image-view.component.css']
 })
 export class ImageViewComponent implements OnInit {
+	canvas;
+	ctx;
+	Draw : Draw = new Draw();
 	constructor() { }
 	ngOnInit() {
+		this.canvas= <HTMLCanvasElement>document.getElementById("myCanvas");
+		this.ctx=this.canvas.getContext("2d");
 		var img = new Image();
 		img.src = $("#imageCar").attr("src");
 		Draw.widthImageDraw = img.width;
 		Draw.heightImageDraw= img.height;
 		this.DrawImage()
 	}
-	ReloadImage(){
-		this.DrawImage();
-	}
-	ReloadShape(points,round = true){
-		if(points.length == 1){
-			this.DrawLine(points[0].x,points[0].y,points[0].x,points[0].y);
+	DrawImage(newImage = false){
+		if(newImage)
+		{
+			Draw.xStart = 0;
+			Draw.yStart = 0;
 		}
-		else if(points.length > 1){
-			for(var j=0;j< points.length - 1;j++){
-				this.DrawLine(points[j].x,points[j].y,points[j+1].x,points[j+1].y);
-			}
-			if(round)
-				this.DrawLine(points[points.length - 1].x,points[points.length - 1].y,points[0].x,points[0].y);
-		}
-	}
-	ReloadLineDraw(datas){
-		for(var i = 0;i < datas.length;i++){
-			var points = datas[i];
-			this.ReloadShape(points);
-		}	
+		var img = new Image();
+		img.src = $("#imageCar").attr("src");
+		this.ctx.save();
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		this.ctx.restore();
+		this.ctx.fillText(Draw.xStart+":"+Draw.yStart,Draw.xStart,Draw.yStart);
+		this.ctx.drawImage(img, Draw.xStart, Draw.yStart,Draw.widthImageDraw ,Draw.heightImageDraw);
+		this.ctx.strokeRect(Draw.xStart, Draw.yStart,Draw.widthImageDraw,Draw.heightImageDraw);
 	}
 	LoadData(){
-		this.ReloadImage();
-		this.ReloadLineDraw(ControlDraw.datas);
-	}
-	DrawLine(x,y,x2,y2){
-		var c= <HTMLCanvasElement>document.getElementById("myCanvas");
-		var ctx=c.getContext("2d");
-		ctx.beginPath();
-		ctx.fillStyle = "red"
-		ctx.moveTo(x,y);
-		ctx.lineTo(x2,y2);
-		ctx.strokeStyle = '#ff0000';
-		ctx.stroke();
-		this.DrawRat(x-2,y-2,4,4);
-		this.DrawRat(x2-2,y2-2,4,4);
+		this.DrawImage();
+		this.Draw.ReloadLineDraw(this.ctx)
 	}
 	TranslatePoint(x,y){
 		for(var j=0; j< ControlDraw.points.length;j++){
@@ -104,28 +91,6 @@ export class ImageViewComponent implements OnInit {
 		}
 
 	}
-	DrawRat(x,y,width,height){
-		var canvas = <HTMLCanvasElement>document.getElementById("myCanvas");
-		var ctx = canvas.getContext("2d");
-		ctx.strokeRect(x,y,width,height);
-	}
-	DrawImage(newImage = false){
-		if(newImage)
-		{
-			Draw.xStart = 0;
-			Draw.yStart = 0;
-		}
-		var canvas = <HTMLCanvasElement>document.getElementById("myCanvas");
-		var ctx = canvas.getContext("2d");
-		var img = new Image();
-		img.src = $("#imageCar").attr("src");
-		ctx.save();
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.restore();
-		ctx.fillText(Draw.xStart+":"+Draw.yStart,Draw.xStart,Draw.yStart);
-		ctx.drawImage(img, Draw.xStart, Draw.yStart,Draw.widthImageDraw ,Draw.heightImageDraw);
-		ctx.strokeRect(Draw.xStart, Draw.yStart,Draw.widthImageDraw,Draw.heightImageDraw);
-	}
 	MouseWheelUpFunc(event) {
 		if(!event.shiftKey)
 			return;
@@ -134,7 +99,7 @@ export class ImageViewComponent implements OnInit {
 		Draw.heightImageDraw *= (100 + ControlDraw.draw.zoom)/100 ;
 		this.ZoomAllData();
 		this.LoadData();
-		this.ReloadShape(ControlDraw.points,false)
+		this.Draw.ReloadShape(this.ctx,ControlDraw.points,false)
 	}
 	MouseWheelDownFunc(event) {
 		if(!event.shiftKey)
@@ -144,7 +109,7 @@ export class ImageViewComponent implements OnInit {
 		Draw.heightImageDraw *= (100 + ControlDraw.draw.zoom)/100 ;
 		this.ZoomAllData();
 		this.LoadData();
-		this.ReloadShape(ControlDraw.points,false)
+		this.Draw.ReloadShape(this.ctx,ControlDraw.points,false)
 	}
 	MouseDownInCanvas(event){
 		var x = event.clientX < 0? 0: event.clientX;
@@ -154,37 +119,16 @@ export class ImageViewComponent implements OnInit {
 			ControlDraw.acceptMoveImage = true;
 		}
 		else{
-			if(ControlDraw.statusDrawLine == 0){
-				ControlDraw.points = []
-				ControlDraw.firstPoint = new Point(x,y);
-				ControlDraw.points.push(ControlDraw.firstPoint);
-				ControlDraw.statusDrawLine = 1;
-				this.DrawLine(x,y,x,y);
-			}
-			else if(ControlDraw.statusDrawLine == 1){
-				var point = new Point(x,y);
-				if(ControlDraw.statusMoveImage)
-					this.DrawLine(ControlDraw.points[ControlDraw.points.length - 1].x,ControlDraw.points[ControlDraw.points.length - 1].y,x,y);	
-				else
-					this.DrawLine(ControlDraw.draw.pointMouseDown.x,ControlDraw.draw.pointMouseDown.y,x,y);
-				ControlDraw.points.push(point);
-			}
+			this.Draw.MouseDownInCanvas(x,y);
 		}
+		this.Draw.ReloadShape(this.ctx,ControlDraw.points,false);
+
 		ControlDraw.draw.pointMouseDown.x = x;
 		ControlDraw.draw.pointMouseDown.y = y;
 		ControlDraw.changeCanvas = false;
 	} 
 	MouseDoubleClick(){
-		var x = ControlDraw.firstPoint.x;
-		var y = ControlDraw.firstPoint.y;
-		this.DrawLine(ControlDraw.draw.pointMouseDown.x,ControlDraw.draw.pointMouseDown.y,x,y);
-		ControlDraw.draw.pointMouseDown.x = x;
-		ControlDraw.draw.pointMouseDown.y = y;
-		ControlDraw.statusDrawLine = 0;
-		ControlDraw.datas.push(ControlDraw.points);
-		ControlDraw.points = []
-		ControlDraw.changeCanvas = true;
-		ControlDraw.statusMoveImage = false;
+		this.Draw.MouseDoubleClick(this.ctx);
 	}
 	MouseUpInCanvas(event){
 		ControlDraw.acceptMoveImage = false;
@@ -203,7 +147,7 @@ export class ImageViewComponent implements OnInit {
 			this.LoadData()
 			ControlDraw.draw.pointMouseDown.SetPoint(xCurrent,yCurrent);
 			this.TranslatePoint(translateX,translateY)
-			this.ReloadShape(ControlDraw.points,false);
+			this.Draw.ReloadShape(this.ctx,ControlDraw.points,false);
 			if(ControlDraw.points.length == 0)
 			{
 				ControlDraw.statusDrawLine = 0;
@@ -242,7 +186,7 @@ export class ImageViewComponent implements OnInit {
 			// tải lại dữ liệu cũ ( đã loại bỏ khối cuối cùng được thêm)
 			this.LoadData();
 			// tải lại dữ liệu khối cuối cùng để tiếp tục thực hiện
-			this.ReloadShape(ControlDraw.points,false)
+			this.Draw.ReloadShape(this.ctx,ControlDraw.points,false)
 			// Trạng thái thay đổi canvas theo chiều ngược lại.
 			ControlDraw.changeCanvas = false;
 			// cài đặt quá trình vẽ mới với khối đã được redo

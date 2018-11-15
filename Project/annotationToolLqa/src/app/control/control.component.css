@@ -21,3 +21,10 @@ td,th{
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+label{
+	cursor: pointer;
+	margin-right: 20px;
+}
+label > span{
+	margin-left: 5px;
+}
