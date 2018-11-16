@@ -19,6 +19,7 @@ export class ImageViewComponent implements OnInit {
 	ngOnInit() {
 		this.canvas= <HTMLCanvasElement>document.getElementById("myCanvas");
 		this.ctx=this.canvas.getContext("2d");
+		this.ctx.strokeStyle = '#ff0000';
 		var img = new Image();
 		img.src = $("#imageCar").attr("src");
 		Draw.widthImageDraw = img.width;
@@ -46,6 +47,7 @@ export class ImageViewComponent implements OnInit {
 	}
 	DrawShape(){
 		this.drawPolygon.ReloadLineDraw();
+		this.drawRact.ReloadAllData();
 	}
 	LoadData(){
 		this.DrawImage();
@@ -64,6 +66,7 @@ export class ImageViewComponent implements OnInit {
 	}
 	ZoomAllData(){
 		this.drawPolygon.ZoomAllData();
+		this.drawRact.ZoomAllData();
 	}
 	SetUpFirstPointDraw(){
 		switch(Draw.typeDraw){
@@ -121,12 +124,16 @@ export class ImageViewComponent implements OnInit {
 				case 1:
 				this.drawPolygon.MouseDownInCanvas(x,y);
 				break;
+				case 2:
+				this.drawRact.MouseDownInCanvas(x,y);
+				break;
 			}
 		}
 
 		ControlDraw.pointMouseDown.x = x;
 		ControlDraw.pointMouseDown.y = y;
 		ControlDraw.changeCanvas = false;
+		console.log(ControlDraw.pointMouseDown)
 	} 
 	MouseDoubleClick(){
 		switch(Draw.typeDraw){
@@ -144,7 +151,14 @@ export class ImageViewComponent implements OnInit {
 		var xCurrent = event.clientX < 0? 0: event.clientX ;
 		var yCurrent = event.clientY < 0? 0: event.clientY;
 		if(ControlDraw.acceptMoveImage){
-			this.drawPolygon.MouseMoveInCanvas(xCurrent,yCurrent);
+			console.log(ControlDraw.pointMouseDown);
+			var translateX = xCurrent - ControlDraw.pointMouseDown.x;
+			var translateY = yCurrent - ControlDraw.pointMouseDown.y;
+			Draw.xStart = translateX + Draw.xStart;
+			Draw.yStart = translateY + Draw.yStart;
+			this.drawPolygon.MouseMoveInCanvas(translateX,translateY);
+			this.drawRact.MouseMoveInCanvas(translateX,translateY);
+			ControlDraw.pointMouseDown.SetPoint(xCurrent,yCurrent);
 			this.LoadData();
 			this.drawPolygon.ReloadShape(this.drawPolygon.points,false);
 		}
