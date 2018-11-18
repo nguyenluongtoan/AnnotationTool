@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import {ImageViewComponent} from '../image-view/image-view.component'
-import {Draw} from '../draw'
-import {ControlDraw} from '../draw'
-import { BrowserModule } from '@angular/platform-browser';
+import {Draw} from '../class/draw'
+import {ControlDraw} from '../class/draw'
+import {SystemConfig} from '../class/config'
+import {PropertyForImage} from '../class/draw'
+
 @Component({
 	selector: 'app-control',
 	templateUrl: './control.component.html',
@@ -13,9 +15,16 @@ export class ControlComponent implements OnInit {
 	public imageViewComponent: ImageViewComponent = new ImageViewComponent();
 	public listImagesBase = [];
 	public listImages = [];
-	keyFilter: string = '';
-	constructor() { }
+	public configData;
+	public keyFilter: string = '';
+	constructor() { 
+		this.loadConfig();
+	}
 	ngOnInit() {}
+	loadConfig(){
+		PropertyForImage.currentProperty = SystemConfig.data[0];
+		this.configData = PropertyForImage.currentProperty
+	}
 	ShowImage(obj){
 		ControlDraw.RefreshControl();
 		$("#imageCar").attr("src",obj.fakePath);
@@ -38,10 +47,10 @@ export class ControlComponent implements OnInit {
 	}
 	FilterData(searchValue : string){
 		this.listImages = this.listImagesBase.filter(x=>x.webkitRelativePath.indexOf(searchValue)>= 0)
-		console.log(this.listImages)
 	}
 	ChangeTypeDraw(type){
 		Draw.typeDraw = type;
+		ControlDraw.statusDrawLine = 0
 	}
 }
 

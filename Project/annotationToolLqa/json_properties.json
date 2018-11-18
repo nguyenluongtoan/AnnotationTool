@@ -1,0 +1,104 @@
+[
+  {
+    "type": "vehicle",
+    "properties": {
+      "issue": {
+        "key": "a",
+        "values": [
+          true,
+          false
+        ]
+      },
+      "occluded": {
+        "key": "0",
+        "values": [
+          "partially",
+          "moderately",
+          "largely"
+        ]
+      },
+      "blinkerstate": {
+        "key": "b",
+        "values": [
+          "brake",
+          "right",
+          "left",
+          "leftandright",
+          "brakeandright",
+          "brakeandleft",
+          "all"
+        ]
+      },
+      "type": {
+        "key": "t",
+        "values": [
+          "car",
+          "truck",
+          "van",
+          "unknown",
+          "motorcycle"
+        ]
+      },
+      "small": {
+        "key": "s",
+        "values": [
+          true,
+          false
+        ]
+      },
+      "truncated": {
+        "key": "c",
+        "values": [
+          "partially",
+          "moderately",
+          "largely"
+        ]
+      },
+      "subtype": {
+        "key": "g",
+        "values": [
+          "van",
+          "mini-bus",
+          "emergency"
+        ]
+      },
+      "negative": {
+        "key": "n",
+        "values": [
+          true,
+          false
+        ]
+      },
+      "rider": {
+        "key": "r",
+        "values": [
+          true,
+          false
+        ]
+      },
+      "direction": {
+        "key": "d",
+        "values": [
+          "opposite",
+          "left-perpendicular",
+          "right-perpendicular"
+        ]
+      },
+      "id": {
+        "key": "i",
+        "values": [
+          ""
+        ]
+      },
+      "yaw": {
+        "key": "e",
+        "values": [
+          "frontL",
+          "frontR",
+          "rearL",
+          "rearR"
+        ]
+      }
+    }
+  }
+]

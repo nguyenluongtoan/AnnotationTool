@@ -1,13 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ImageViewComponent } from './image-view/image-view.component';
 import { ControlComponent } from './control/control.component';
-import { BatComponent } from './bat/bat.component';
-import { CatComponent } from './cat/cat.component';
 import { RatComponent } from './rat/rat.component';
 import { MouseWheelDirective } from './control/mousewheel.directive';
 
@@ -16,8 +13,6 @@ import { MouseWheelDirective } from './control/mousewheel.directive';
     AppComponent,
     ImageViewComponent,
     ControlComponent,
-    BatComponent,
-    CatComponent,
     RatComponent,
     MouseWheelDirective
   ],

@@ -28,3 +28,6 @@ label{
 label > span{
 	margin-left: 5px;
 }
+th{
+    text-align: center;
+}

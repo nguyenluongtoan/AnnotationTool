@@ -1,10 +1,10 @@
 import { Component, OnInit} from '@angular/core';
-import {Draw} from '../draw'
-import {Point} from '../draw'
-import {ControlDraw} from '../draw'
-import {DrawPolygon} from '../draw'
-import {DrawRact} from '../draw'
-
+import {Draw} from '../class/draw'
+import {Point} from '../class/draw'
+import {ControlDraw} from '../class/draw'
+import {DrawPolygon} from '../class/draw'
+import {DrawRact} from '../class/draw'
+import {DrawPolyLine} from '../class/draw'
 @Component({
 	selector: 'app-image-view',
 	templateUrl: './image-view.component.html',
@@ -13,6 +13,7 @@ import {DrawRact} from '../draw'
 export class ImageViewComponent implements OnInit {
 	public drawPolygon: DrawPolygon = new DrawPolygon();
 	public drawRact: DrawRact  = new DrawRact();
+	public drawPolyLine: DrawPolyLine  = new DrawPolyLine();
 	canvas;
 	ctx;
 	constructor() { }
@@ -28,6 +29,8 @@ export class ImageViewComponent implements OnInit {
 		this.drawPolygon.canvas = this.canvas;
 		this.drawRact.ctx = this.ctx;
 		this.drawRact.canvas = this.canvas;
+		this.drawPolyLine.ctx = this.ctx;
+		this.drawPolyLine.canvas = this.canvas;
 		this.DrawImage()
 	}
 	DrawImage(newImage = false){
@@ -48,25 +51,16 @@ export class ImageViewComponent implements OnInit {
 	DrawShape(){
 		this.drawPolygon.ReloadLineDraw();
 		this.drawRact.ReloadAllData();
+		this.drawPolyLine.ReloadLineDraw();
 	}
 	LoadData(){
 		this.DrawImage();
 		this.DrawShape();
 	}
-	TranslateAllData(x,y){
-		this.drawPolygon.TranslateAllData(x,y);
-	}
-	ZoomPoint(points){
-		switch(Draw.typeDraw){
-			case 1:
-			this.drawPolygon.ZoomPoint(points);
-			break;
-		}
-		this.SetUpEndPointDraw();
-	}
 	ZoomAllData(){
 		this.drawPolygon.ZoomAllData();
 		this.drawRact.ZoomAllData();
+		this.drawPolyLine.ZoomAllData();
 	}
 	SetUpFirstPointDraw(){
 		switch(Draw.typeDraw){
@@ -95,6 +89,10 @@ export class ImageViewComponent implements OnInit {
 			this.drawPolygon.ReloadShape(this.drawPolygon.points,false);
 			this.SetUpEndPointDraw();
 			break;
+			case 3:
+			this.drawPolyLine.ReloadShape(this.drawPolygon.points);
+			this.SetUpEndPointDraw();
+			break;
 		}
 	}
 	MouseWheelDownFunc(event) {
@@ -108,6 +106,10 @@ export class ImageViewComponent implements OnInit {
 		switch(Draw.typeDraw){
 			case 1:
 			this.drawPolygon.ReloadShape(this.drawPolygon.points,false);
+			this.SetUpEndPointDraw();
+			break;
+			case 3:
+			this.drawPolyLine.ReloadShape(this.drawPolygon.points);
 			this.SetUpEndPointDraw();
 			break;
 		}
@@ -127,18 +129,23 @@ export class ImageViewComponent implements OnInit {
 				case 2:
 				this.drawRact.MouseDownInCanvas(x,y);
 				break;
+				case 3:
+				this.drawPolyLine.MouseDownInCanvas(x,y);
+				break;
 			}
 		}
 
 		ControlDraw.pointMouseDown.x = x;
 		ControlDraw.pointMouseDown.y = y;
 		ControlDraw.changeCanvas = false;
-		console.log(ControlDraw.pointMouseDown)
 	} 
 	MouseDoubleClick(){
 		switch(Draw.typeDraw){
 			case 1:
 			this.drawPolygon.MouseDoubleClick();
+			break;
+			case 3:
+			this.drawPolyLine.MouseDoubleClick();
 			break;
 		}
 	}
@@ -151,13 +158,13 @@ export class ImageViewComponent implements OnInit {
 		var xCurrent = event.clientX < 0? 0: event.clientX ;
 		var yCurrent = event.clientY < 0? 0: event.clientY;
 		if(ControlDraw.acceptMoveImage){
-			console.log(ControlDraw.pointMouseDown);
 			var translateX = xCurrent - ControlDraw.pointMouseDown.x;
 			var translateY = yCurrent - ControlDraw.pointMouseDown.y;
 			Draw.xStart = translateX + Draw.xStart;
 			Draw.yStart = translateY + Draw.yStart;
 			this.drawPolygon.MouseMoveInCanvas(translateX,translateY);
 			this.drawRact.MouseMoveInCanvas(translateX,translateY);
+			this.drawPolyLine.MouseMoveInCanvas(translateX,translateY);
 			ControlDraw.pointMouseDown.SetPoint(xCurrent,yCurrent);
 			this.LoadData();
 			this.drawPolygon.ReloadShape(this.drawPolygon.points,false);
