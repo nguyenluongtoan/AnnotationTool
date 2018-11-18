@@ -10,7 +10,8 @@ export class SystemConfig{
       "values": [
       true,
       false
-      ]
+      ],
+      "value": true
     },
     {
       "property": "occluded",
@@ -20,7 +21,8 @@ export class SystemConfig{
       "partially",
       "moderately",
       "largely"
-      ]
+      ],
+      "value": "partially"
     },
     {
       "property": "blinkerstate",
@@ -34,7 +36,8 @@ export class SystemConfig{
       "brakeandright",
       "brakeandleft",
       "all"
-      ]
+      ],
+      "value": "brake"
     },
     {
       "property": "type",
@@ -46,7 +49,8 @@ export class SystemConfig{
       "van",
       "unknown",
       "motorcycle"
-      ]
+      ],
+      "value": "car"
     },
     {
       "property": "small",
@@ -55,7 +59,8 @@ export class SystemConfig{
       "values": [
       true,
       false
-      ]
+      ],
+      "value": true
     },
     {
       "property": "truncated",
@@ -65,7 +70,8 @@ export class SystemConfig{
       "partially",
       "moderately",
       "largely"
-      ]
+      ],
+      "value": "partially"
     },
     {
       "property": "subtype",
@@ -75,7 +81,8 @@ export class SystemConfig{
       "van",
       "mini-bus",
       "emergency"
-      ]
+      ],
+      "value": "van"
     },
     {
       "property": "negative",
@@ -84,7 +91,8 @@ export class SystemConfig{
       "values": [
       true,
       false
-      ]
+      ],
+      "value": true
     },
     {
       "property": "rider",
@@ -93,7 +101,8 @@ export class SystemConfig{
       "values": [
       true,
       false
-      ]
+      ],
+      "value": true
     },
     {
       "property": "direction",
@@ -103,13 +112,15 @@ export class SystemConfig{
       "opposite",
       "left-perpendicular",
       "right-perpendicular"
-      ]
+      ],
+      "value": "opposite"
     },
     {
       "property": "id",
       "key": "i",
       "option": false,
-      "values": ""
+      "values": [""],
+      "value": ""
     },
     {
       "property": "yaw",
@@ -120,7 +131,8 @@ export class SystemConfig{
       "frontR",
       "rearL",
       "rearR"
-      ]
+      ],
+      "value": "frontL"
     }
     ]
   }

@@ -28,6 +28,18 @@ export class DrawPolygon{
 			this.ReloadShape(points);
 		}	
 	}
+	public MarkShape(points){
+		this.ctx.strokeStyle = '#daca0e';
+		if(points.length == 1){
+			this.DrawRat(points[0].x-4,points[0].y-4,8,8);
+		}
+		else if(points.length > 1){
+			for(var j=0;j< points.length - 1;j++){
+				this.DrawRat(points[j].x-4,points[j].y-4,8,8);
+			}
+		}
+		this.ctx.strokeStyle = '#ff0000';
+	}
 	public DrawRat(x,y,width,height){
 		this.ctx.strokeRect(x,y,width,height);
 	}
@@ -325,6 +337,7 @@ export class DrawRact{
 			this.firstRact = new Ract(x,y,x,y);
 			ControlDraw.statusDrawLine = 1;
 			this.DrawRat2(x-2,y-2)
+			return false; // no done
 		}
 		else{
 			this.firstRact.pointEnd.SetPoint(x,y);
@@ -333,6 +346,7 @@ export class DrawRact{
 			this.datas.push(this.firstRact);
 			this.firstRact = null;
 			ControlDraw.statusDrawLine = 0;
+			return true; // done shape
 		}
 	}
 	public ZoomPoint(ract){

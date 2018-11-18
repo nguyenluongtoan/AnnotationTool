@@ -3,16 +3,16 @@ import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ImageViewComponent } from './image-view/image-view.component';
-import { ControlComponent } from './control/control.component';
+//import { ImageViewComponent } from './image-view/image-view.component';
+//import { ControlComponent } from './control/control.component';
 import { RatComponent } from './rat/rat.component';
 import { MouseWheelDirective } from './control/mousewheel.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ImageViewComponent,
-    ControlComponent,
+    //ImageViewComponent,
+    //ControlComponent,
     RatComponent,
     MouseWheelDirective
   ],
