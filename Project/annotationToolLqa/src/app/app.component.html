@@ -34,13 +34,13 @@
 
  				<div class="col-md-12" style="margin-bottom: 10px">
  					Function: 
- 					<input type="submit" class="btn btn-default" value="<">
- 					<input type="submit" class="btn btn-default" value="<<">
- 					<input type="submit" onclick="$('#filepicker').click()" class="btn btn-default" value="O">
- 					<input type="submit" class="btn btn-default" value=">">
+ 					<!--<input type="submit" class="btn btn-default" value="<<">
+ 					<input type="submit" class="btn btn-default" value="<">-->
+ 					<input type="submit" onclick="$('#filepicker').click()" class="btn btn-default" value="Open">
+ 					<input style="margin-left: 10px" type="submit" class="btn btn-primary" value="Submit">
+ 					<!--<input type="submit" class="btn btn-default" value=">">
  					<input type="submit" class="btn btn-default" value=">>">
- 					<input type="submit" class="btn btn-primary" value="Submit">
- 					<input type="checkbox" class="cb1">Follow mouse
+ 					<!--<input type="checkbox" class="cb1">Follow mouse-->
  				</div>
  				<div class="col-md-12" style="margin-bottom: 10px">
  					<div style="height: 250px;overflow: auto;border: 1px solid #f0f0f0;">
@@ -97,11 +97,11 @@
  								</tr>
  							</thead>
  							<tbody>
- 								<tr *ngFor='let item of configData.properties'  align="center">
+ 								<tr *ngFor='let item of configData.properties; let i = index'  align="center">
  									<td>{{item.key}}</td>
  									<td>{{item.property}}</td>
  									<td *ngIf="item.option">
- 										<select [(ngModel)]="item.value" class="form-control">
+ 										<select  (click)="ChooseShapeDraw(index)" [(ngModel)]="item.value" class="form-control">
  											<option value="{{data}}" *ngFor='let data of item.values'>{{data}}</option>
  										</select>
  									</td>
@@ -115,13 +115,13 @@
  				</div>
  			</div>
 
- 			<p>Review</p>
+ 			<!--<p>Review</p>
  			<input type="checkbox" class="cb1" cheked>Mouse
  			<input type="radio" style="margin-left: 100px;">OK
  			<input type="radio" style="margin-left: 20px;" checked>NG
  			<br>
  			<textarea cols="48" rows="6" class="form-control"></textarea>
- 			<br>
+ 			<br>-->
  			<input type="file" style="display: none;" id="filepicker" name="fileList" webkitdirectory multiple />
  			<input type="hidden" id="fileUpload" name="">
  			<button class="hidden" (click)="ShowListImage()" id="eventShowListImage"></button>

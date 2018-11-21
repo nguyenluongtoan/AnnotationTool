@@ -78,7 +78,9 @@ export class AppComponent {
 		Draw.typeDraw = type;
 		ControlDraw.statusDrawLine = 0
 	}
-
+	ChooseShapeDraw(index){
+		console.log(index)
+	}
 	//----------------------------
 	
 	DrawImage(newImage = false){
@@ -281,6 +283,7 @@ export class AppComponent {
 			break;
 		}
 	}
+	///
 	KeyPress(event){
 		if(this.doneOneShape){
 			var keyDown = event.key;
