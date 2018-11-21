@@ -228,9 +228,11 @@ export class AppComponent {
 	Keyup(event){
 		// kiểm tra thao tác redo ctrl + z
 		if(event.ctrlKey && event.keyCode == 90){
+			console.log('if(event.ctrlKey && event.keyCode == 90){');
+			var inCaseRemoveObject=0;
 			switch(Draw.typeDraw){
 				case 1:
-				this.drawPolygon.Keyup();
+				inCaseRemoveObject = this.drawPolygon.Keyup();
 				this.LoadData();
 				this.drawPolygon.ReloadShape(this.drawPolygon.points,false);
 				break;
@@ -239,9 +241,14 @@ export class AppComponent {
 			// cập  nhật lại điểm đầu của khối và điểm gần nhất được cập nhật của khối
 			this.SetUpFirstPointDraw();
 			this.SetUpEndPointDraw();
+			if(inCaseRemoveObject==1){
+				this.properties.splice(this.properties.length - 1,1);
+			}
+			
 		}
 	}
 	StartInputProperty(){
+		console.log('StartInputProperty(){');
 		if(this.doneOneShape){
 			this.configData = JSON.parse(JSON.stringify(SystemConfig.data[0]));
 			switch(Draw.typeDraw){

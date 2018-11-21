@@ -143,6 +143,8 @@ export class DrawPolygon{
 			ControlDraw.changeCanvas = true;
 	}
 	public Keyup(){
+		var returnVal = 0;
+		var inCaseRemoveObject = 1;
 		// Nếu khối không có điểm nào và trong danh sách các khối có dữ liệu 
 		//=> lấy khối cuối cùng được thêm vào để thực hiên thao tác redo
 		if(this.points.length == 0 && this.datas.length > 0){
@@ -151,24 +153,33 @@ export class DrawPolygon{
 		// Nếu có sự thay đổi theo chiều tiến của canvas 
 		// => xóa khối cuối cùng được thêm và tiếp tục xử lý khối đó
 		if(ControlDraw.changeCanvas && this.datas.length > 0){ //(*)
+			returnVal = inCaseRemoveObject;
 			this.datas.splice(this.datas.length - 1,1);
 		}
 		// Nếu khối có các điểm thì xóa điểm cuối cùng được thêm ( đường thằng)
-		if(this.points.length > 0)
+		if(this.points.length > 0){
 			this.points.splice(this.points.length -1,1)
+		}
 		// Nếu redo vào trường hợp không còn điểm và trong danh sách khối có dữ liệu thì cập nhật lại khối cuỗi cùng
 		// trong danh sách và loại bỏ khối cuối trong danh sách ( tương tự (*) )
 		if(this.points.length == 0 && this.datas.length > 0){
+			returnVal = inCaseRemoveObject;
 			this.points = this.datas[this.datas.length - 1];
 			this.datas.splice(this.datas.length - 1,1);
 		}
 		// Trạng thái thay đổi canvas theo chiều ngược lại.
 		ControlDraw.changeCanvas = false;
 		// cài đật trạng thái vẽ ( điểm kế tiếp là điểm đầu/ điểm cuối)
-		if(this.datas.length == 0 && this.points.length == 0) // toàn bộ dữ liệu trống
+		if(this.datas.length == 0 && this.points.length == 0){
+			// toàn bộ dữ liệu trống
 			ControlDraw.statusDrawLine = 0;
-		else // dữ liệu không trống => tiếp tục vẽ
+		} 
+		else{
+			// dữ liệu không trống => tiếp tục vẽ
 			ControlDraw.statusDrawLine = 1;
+		} 
+		console.log('returnVal '+ returnVal);
+		return returnVal;
 	}
 }
 export class DrawPolyLine{
@@ -222,6 +233,7 @@ export class DrawPolyLine{
 		}
 	}
 	public MouseDoubleClick(){
+		console.log('public MouseDoubleClick(){');
 		ControlDraw.statusDrawLine = 0;
 		this.datas.push(this.points);
 		this.points = [];
