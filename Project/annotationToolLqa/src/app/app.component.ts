@@ -8,7 +8,7 @@ import {DrawRact} from './class/draw'
 import {DrawPolyLine} from './class/draw'
 import {SystemConfig} from './class/config'
 import {PropertyForImage} from './class/draw'
-
+declare var saveAs: any;
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -28,6 +28,7 @@ export class AppComponent {
 	public configData;
 	public properties;
 	public keyFilter: string = '';
+	public imageChooseDraw;
 	constructor() { 
 		this.loadConfig();
 	}
@@ -52,6 +53,7 @@ export class AppComponent {
 		this.properties = PropertyForImage.properties
 	}
 	ShowImage(obj){
+		this.imageChooseDraw = obj
 		ControlDraw.RefreshControl();
 		$("#imageCar").attr("src",obj.fakePath);
 		Draw.xStart = 0;
@@ -81,10 +83,41 @@ export class AppComponent {
 	ChooseShapeDraw(index){
 		console.log(index)
 	}
+	SaveProperty(){
+		var json1 =JSON.stringify( this.GetJsonData());
+		console.log(json1)
+		var filename = this.imageChooseDraw.webkitRelativePath.split('/')[1].split('.')[0]
+		var blob = new Blob([json1], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, filename+".txt");
+	}
+	GetJsonData(){
+		var data = [];
+		if(this.drawPolygon.datas != null && this.drawPolygon.datas.length > 0){
+			data.push({
+				type: 'drawPolygon',
+				data: this.drawPolygon.datas
+			})
+		}
+		if(this.drawRact.datas != null && this.drawRact.datas.length > 0){
+			data.push({
+				type: 'drawRact',
+				data: this.drawRact.datas
+			})
+		}
+		if(this.drawPolyLine.datas != null && this.drawPolyLine.datas.length > 0){
+			data.push({
+				type: 'drawPolyLine',
+				data: this.drawPolyLine.datas
+			})
+		}
+		return data;
+	}
+
 	//----------------------------
 	
 	DrawImage(newImage = false){
-		if(newImage)
+		console.log(' Draw Image');
+		if(newImage) // nếu ảnh mới thì xác tịnh tọa độ vẽ về điểm gốc
 		{
 			Draw.xStart = 0;
 			Draw.yStart = 0;
@@ -127,9 +160,11 @@ export class AppComponent {
 		}
 	}
 	MouseWheelUpFunc(event) {
+		console.log('MouseWheelUpFunc');
+		// nếu giữ phìm shiftKey thì mới tiếp tục vẽ
 		if(!event.shiftKey)
 			return;
-		ControlDraw.zoom = 1;
+		ControlDraw.zoom = 1; // gán nhãn phóng to
 		Draw.widthImageDraw *= (100 + ControlDraw.zoom)/100 ;
 		Draw.heightImageDraw *= (100 + ControlDraw.zoom)/100 ;
 		this.ZoomAllData();
@@ -148,7 +183,7 @@ export class AppComponent {
 	MouseWheelDownFunc(event) {
 		if(!event.shiftKey)
 			return;
-		ControlDraw.zoom = -1;
+		ControlDraw.zoom = -1; // gán nhãn phóng nhỏ
 		Draw.widthImageDraw *= (100 + ControlDraw.zoom)/100 ;
 		Draw.heightImageDraw *= (100 + ControlDraw.zoom)/100 ;
 		this.ZoomAllData();
