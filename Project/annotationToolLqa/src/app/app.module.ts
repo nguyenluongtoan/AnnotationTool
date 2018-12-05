@@ -1,27 +1,23 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import {FormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-//import { ImageViewComponent } from './image-view/image-view.component';
-//import { ControlComponent } from './control/control.component';
-import { RatComponent } from './rat/rat.component';
-import { MouseWheelDirective } from './control/mousewheel.directive';
+import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    //ImageViewComponent,
-    //ControlComponent,
-    RatComponent,
-    MouseWheelDirective
+    AppComponent, 
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(router: Router) {
+  }
+}

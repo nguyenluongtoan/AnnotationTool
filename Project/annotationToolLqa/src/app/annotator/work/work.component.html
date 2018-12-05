@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-md-8 text-center" style="position: relative;overflow: hidden;background: whitesmoke;padding-right: 0;">
+    <div>
+      <div style="position: absolute;right: 0px;border: 2px solid red;">
+        <img id="imageCar" src="assets/images/ks.jpg" width="100px" height="100px">
+      </div>
+      <canvas (keypress)="KeyPress($event)" tabindex="10" (keyup)="Keyup($event)" (dblclick)="MouseDoubleClick()"
+        (mousedown)='MouseDownInCanvas($event)' (mouseup)='MouseUpInCanvas($event)' (mousemove)='MouseMoveInCanvas($event)'
+        mouseWheel (mouseWheelUp)="MouseWheelUpFunc($event)" (mouseWheelDown)="MouseWheelDownFunc($event)" id="myCanvas"
+        width="2000" height="1000" style="border: 1px solid #ddd;min-width: 100%;cursor: crosshair;"> </canvas>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div>
+      <p>Draw style</p>
+      <div class="row">
+        <div class="col-md-12">
+          <label>
+            <input checked="" (click)="ChangeTypeDraw(1)" type="radio" name="typeDraw" value="1">
+            <span>Polygon</span>
+          </label>
+          <label>
+            <input (click)="ChangeTypeDraw(2)" type="radio" name="typeDraw" value="2">
+            <span>Rectangle</span>
+          </label>
+          <label>
+            <input (click)="ChangeTypeDraw(3)" type="radio" name="typeDraw" value="2">
+            <span>PolyLine</span>
+          </label>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 10px">
+          <div>
+            <span>Filter:</span>
+            <input [(ngModel)]="keyFilter" type="text" (input)="FilterData($event.target.value)" class="form-control"
+              style="border: 1px solid #e0e0e0;padding: 5px;" width="100px">
+          </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+          Function:
+          <!--<input type="submit" class="btn btn-default" value="<<">
+ 					<input type="submit" class="btn btn-default" value="<">-->
+          <input type="submit" onclick="$('#filepicker').click()" class="btn btn-default" value="Open">
+          <input style="margin-left: 10px" (click)="SaveProperty()" type="submit" class="btn btn-primary" value="Submit">
+          <!--<input type="submit" class="btn btn-default" value=">">
+ 					<input type="submit" class="btn btn-default" value=">>">
+ 					<!--<input type="checkbox" class="cb1">Follow mouse-->
+        </div>
+        <div class="col-md-12" style="margin-bottom: 10px">
+          <div style="height: 250px;overflow: auto;border: 1px solid #f0f0f0;">
+            <table class="table table-border">
+              <thead>
+                <tr>
+                  <th>Work</th>
+                  <th>Review</th>
+                  <th>File name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor='let item of listImages' (click)="ShowImage(item)" height="23px" style="cursor: pointer;">
+                  <td>O</td>
+                  <td></td>
+                  <td>{{item.webkitRelativePath}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <p>Object Property</p>
+      <div class="row" style="margin: 0px;">
+        <div class="col-sm-4" style="padding: 0;">
+          <div style="height: 250px;overflow: auto;border-top: 1px solid #c3c3c3;border-bottom: 1px solid #c3c3c3;">
+            <table class="table">
+              <thead>
+                <tr align="center">
+                  <th>Object</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor='let item of properties' align="center">
+                  <td>
+                    <select class="form-control">
+                      <option>{{item.data.type}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-sm-8" style="padding-left: 5px;">
+          <div style="height: 250px;overflow: auto;border-top: 1px solid #c3c3c3;border-bottom: 1px solid #c3c3c3;">
+            <table class="table">
+              <thead>
+                <tr align="center">
+                  <th>Key</th>
+                  <th>Property</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor='let item of configData.properties; let i = index' align="center">
+                  <td>{{item.key}}</td>
+                  <td>{{item.property}}</td>
+                  <td *ngIf="item.option">
+                    <select (click)="ChooseShapeDraw(index)" [(ngModel)]="item.value" class="form-control">
+                      <option value="{{data}}" *ngFor='let data of item.values'>{{data}}</option>
+                    </select>
+                  </td>
+                  <td *ngIf="!item.option">
+                    <input [(ngModel)]="item.value" type="text" class="form-control" name="">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--<p>Review</p>
+ 			<input type="checkbox" class="cb1" cheked>Mouse
+ 			<input type="radio" style="margin-left: 100px;">OK
+ 			<input type="radio" style="margin-left: 20px;" checked>NG
+ 			<br>
+ 			<textarea cols="48" rows="6" class="form-control"></textarea>
+ 			<br>-->
+      <input type="file" style="display: none;" id="filepicker" name="fileList" webkitdirectory multiple />
+      <input type="hidden" id="fileUpload" name="">
+      <button class="hidden" (click)="ShowListImage()" id="eventShowListImage"></button>
+    </div>
+
+
+  </div>
+</div>

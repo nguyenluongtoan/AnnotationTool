@@ -1,10 +1,34 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule }             from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const appRoutes: Routes = [
+  {
+    path: 'admin',
+    loadChildren: './admin/admin.module#AdminModule'
+  },
+  { 
+    path: 'annotator', 
+    loadChildren: './annotator/annotator.module#AnnotatorModule'
+  },
+  { 
+    path: '', 
+    redirectTo: '/annotator', pathMatch: 'full'
+  },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      {
+        enableTracing: false
+      }
+    )
+  ],
+  exports: [
+    RouterModule
+  ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+  
+ }
