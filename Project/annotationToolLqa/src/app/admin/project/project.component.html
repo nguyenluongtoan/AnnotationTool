@@ -1,13 +1,20 @@
 <div class="box box-default color-palette-box">
   <div class="box-header with-border">
-    <h3 class="box-title"><i class="fa fa-database"></i> &nbsp; Project</h3>
+    <div class="row">
+        <div class="col-sm-8">
+          <h3 class="box-title"><i class="fa fa-database"></i> &nbsp; Project</h3>
+        </div>
+        <div class="col-sm-4 text-right">
+          <button class="btn btn-primary">Add Project</button>
+        </div>
+    </div>
   </div>
   <div class="box-body">
     <div class="row">
       <div class="col-md-12">
         <div style="height: 780px;">
-          <ag-grid-angular style="width: 500px; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
-            [columnDefs]="columnDefs">
+          <ag-grid-angular [frameworkComponents]="frameworkComponents" [gridOptions]="gridOptions" style="height: 650px;"
+            class="ag-theme-balham">
           </ag-grid-angular>
         </div>
       </div>
