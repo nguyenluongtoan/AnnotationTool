@@ -4,34 +4,19 @@
 	<meta charset="utf-8">
 	<title>AnnotationToolLqa</title>
 	<base href="/">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript" src="./assets/fileHelper.js"></script>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="./assets/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="./assets/dist/css/skins/_all-skins.min.css">
 </head>
-<body>
+<body class="sidebar-mini skin-blue-light">
 	<app-root></app-root>
-	<script type="text/javascript">
-		$( document ).ready(function() {
-			document.getElementById("filepicker").addEventListener("change", function(event) {
-				let files = event.target.files;
-				var objs = []
-				for (let i=0; i<files.length; i++) {
-					var item = {
-						name: files[i].name,
-						webkitRelativePath: files[i].webkitRelativePath,
-						type: files[i].type,
-						size: files[i].size,
-						fakePath: URL.createObjectURL(files[i])
-					}
-					objs.push(item)
-				};
-				$("#fileUpload").val(JSON.stringify(objs))
-				$("#eventShowListImage").click()
-			}, false);
-		});
-	</script>
+	<script src="./assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+	<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+	<script src="./assets/plugins/fastclick/fastclick.min.js"></script>
+	<script src="./assets/dist/js/app.min.js"></script>
+	<script src="./assets/dist/js/demo.js"></script>
 </body>
 </html>
