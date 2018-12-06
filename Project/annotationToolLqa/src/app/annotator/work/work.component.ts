@@ -199,8 +199,8 @@ export class WorkComponent implements OnInit {
 	}
 	MouseDownInCanvas(event){
 		this.doneOneShape = false;
-		var x = event.clientX < 0? 0: event.clientX;
-		var y = event.clientY < 0? 0: event.clientY;
+		var x = event.layerX < 0? 0: event.layerX;
+		var y = event.layerY < 0? 0: event.layerY;
 		if(event.shiftKey)
 		{
 			ControlDraw.acceptMoveImage = true;
@@ -239,12 +239,12 @@ export class WorkComponent implements OnInit {
 	}
 	MouseUpInCanvas(event){
 		ControlDraw.acceptMoveImage = false;
-		ControlDraw.pointMouseUp.x = event.clientX < 0? 0: event.clientX ;
-		ControlDraw.pointMouseUp.y = event.clientY < 0? 0: event.clientY;
+		ControlDraw.pointMouseUp.x = event.layerX < 0? 0: event.layerX ;
+		ControlDraw.pointMouseUp.y = event.layerY < 0? 0: event.layerY;
 	} 
 	MouseMoveInCanvas(event){
-		var xCurrent = event.clientX < 0? 0: event.clientX ;
-		var yCurrent = event.clientY < 0? 0: event.clientY;
+		var xCurrent = event.layerX < 0? 0: event.layerX ;
+		var yCurrent = event.layerY < 0? 0: event.layerY;
 		if(ControlDraw.acceptMoveImage){
 			var translateX = xCurrent - ControlDraw.pointMouseDown.x;
 			var translateY = yCurrent - ControlDraw.pointMouseDown.y;
