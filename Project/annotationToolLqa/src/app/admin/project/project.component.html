@@ -1,15 +1,16 @@
-<div class="content-wrapper">
-    <section class="content-header">
-      <h1>
-        Project
-        <small>Manage prject</small>
-      </h1>
-    </section>
-    <section class="content">
-      <div class="row">
-        <div class="col-md-12">
-          <h4>ahihi</h4>
+<div class="box box-default color-palette-box">
+  <div class="box-header with-border">
+    <h3 class="box-title"><i class="fa fa-database"></i> &nbsp; Project</h3>
+  </div>
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div style="height: 780px;">
+          <ag-grid-angular style="width: 500px; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
+            [columnDefs]="columnDefs">
+          </ag-grid-angular>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 </div>

@@ -6,6 +6,7 @@ import { ProjectComponent }           from './project/project.component';
 import { TaskComponent }  from './task/task.component';
 import { UserComponent }    from './user/user.component';
 import { DashboardComponent }  from './dashboard/dashboard.component';
+import { AssignTaskComponent }  from './assign-task/assign-task.component';
 
 const adminRoutes: Routes = [
   {
@@ -17,6 +18,7 @@ const adminRoutes: Routes = [
         children: [
           { path: 'project', component: ProjectComponent },
           { path: 'task', component: TaskComponent },
+          { path: 'assign-task', component: AssignTaskComponent },
           { path: 'user', component: UserComponent },
           { path: '', component: DashboardComponent }
         ]
