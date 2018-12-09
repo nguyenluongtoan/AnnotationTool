@@ -7,11 +7,14 @@ import {DrawRact} from '../class/draw';
 import {DrawPolyLine} from '../class/draw';
 import {SystemConfig} from '../class/config';
 import {PropertyForImage} from '../class/draw';
+import {AnnotatorService} from '../annotator.service';
+
 declare var saveAs: any;
 @Component({
   selector: 'app-annotator',
   templateUrl: './work.component.html',
-  styleUrls: ['./work.component.css']
+  styleUrls: ['./work.component.css'],
+  providers: [AnnotatorService]
 })
 export class WorkComponent implements OnInit { 
 	public drawPolygon: DrawPolygon = new DrawPolygon();
@@ -27,10 +30,15 @@ export class WorkComponent implements OnInit {
 	public properties;
 	public keyFilter: string = '';
 	public imageChooseDraw;
-	constructor() { 
+	public dataAPITest = {};
+
+	constructor(private _annotatorService: AnnotatorService) { 
 		this.loadConfig();
 	}
 	ngOnInit() {
+		this._annotatorService.getData().subscribe((x)=>{
+			console.log(x)
+		})
 		this.canvas= <HTMLCanvasElement>document.getElementById("myCanvas");
 		this.ctx=this.canvas.getContext("2d");
 		this.ctx.strokeStyle = '#ff0000';
@@ -82,31 +90,124 @@ export class WorkComponent implements OnInit {
 		console.log(index)
 	}
 	SaveProperty(){
-		var json1 =JSON.stringify( this.GetJsonData());
-		console.log(json1)
-		var filename = this.imageChooseDraw.webkitRelativePath.split('/')[1].split('.')[0]
-		var blob = new Blob([json1], {type: "text/plain;charset=utf-8"});
-		saveAs(blob, filename+".txt");
+		this.dataAPITest = {
+		  "insertObject": {
+			"projectName":"abd",
+			"taskName":"xyz",
+		    "image": {
+				"identifier": "drive_data/Kia1.2017_09_11_1200.highway805and5.1hr/generated/CAM-TFN20/preprocessed/frame_0022657.undistorted.png",
+				"imsize": [1280, 800]
+			},
+			"regions": [{
+				"ansize": [1280, 800],
+				"class": "vehicle",
+				"annotationType": "car",
+				"annotationSubtype": "sedan",
+				"type": "line",
+				"length": 141.01418368376991,
+				"area": 0,
+				"tags": null,
+				"vertices": null,
+				"boxcorners": null,
+				"linegroup": [{
+					"tags": [],
+					"vertices": [947, 92, 1088, 94]
+				}]
+			}]
+		  }
+		};
+		var regions = this.GetJsonData();
+		this.dataAPITest.insertObject.regions = regions;
+		var jsonData = JSON.stringify(this.dataAPITest);
+		this._annotatorService.postData(jsonData)
+	     .subscribe( response => {
+	     	console.log('----')
+		            console.log(response);					   
+		 			},error => {
+                     	var errorMessage = <any>error;
+                     	console.log(errorMessage)
+                     });
 	}
 	GetJsonData(){
 		var data = [];
+		var objBasePolygon = {
+			"ansize": [1280, 800],
+			"class": "vehicle",
+			"annotationType": "car",
+			"annotationSubtype": "sedan",
+			"type": "polygon",
+			"length": 0,
+			"area": 75999.5,
+			"tags": [],
+			"vertices": [932, 622, 584, 721, 664, 393, 899, 423, 932, 622],
+			"boxcorners": null,
+			"linegroup": null
+		}
 		if(this.drawPolygon.datas != null && this.drawPolygon.datas.length > 0){
-			data.push({
-				type: 'drawPolygon',
-				data: this.drawPolygon.datas
-			})
+			for(var i=0;i<this.drawPolygon.datas.length;i++){
+				var vertices = [];
+				for(var j=0;j<this.drawPolygon.datas[i].length;j++){
+					vertices.push(this.drawPolygon.datas[i][j].x)
+					vertices.push(this.drawPolygon.datas[i][j].y)
+				}
+				var item = JSON.parse(JSON.stringify(objBasePolygon));
+				item.vertices = vertices;
+				data.push(item)
+			}
+
+		}
+		var objBaseBox = {
+			"ansize": [1280, 800],
+			"class": "trafficsign",
+			"annotationType": "truck",
+			"annotationSubtype": "tractor",
+			"type": "box",
+			"length": 0,
+			"area": 32940,
+			"tags": ["type:truck", "subtype:tractor"],
+			"vertices": null,
+			"boxcorners": [539, 99, 783, 234],
+			"linegroup": null
 		}
 		if(this.drawRact.datas != null && this.drawRact.datas.length > 0){
-			data.push({
-				type: 'drawRact',
-				data: this.drawRact.datas
-			})
+			for(var i=0;i<this.drawRact.datas.length;i++){
+				var vertices = [];
+				vertices.push(this.drawRact.datas[i].pointStart.x)
+				vertices.push(this.drawRact.datas[i].pointStart.y)
+				vertices.push(this.drawRact.datas[i].pointEnd.x)
+				vertices.push(this.drawRact.datas[i].pointEnd.y)
+				var item = JSON.parse(JSON.stringify(objBaseBox));
+				item.boxcorners = vertices;
+				data.push(item)
+			}
 		}
+		var objBaseLine = {
+			"ansize": [1280, 800],
+			"class": "vehicle",
+			"annotationType": "car",
+			"annotationSubtype": "sedan",
+			"type": "line",
+			"length": 141.01418368376991,
+			"area": 0,
+			"tags": null,
+			"vertices": null,
+			"boxcorners": null,
+			"linegroup": [{
+				"tags": [],
+				"vertices": [947, 92, 1088, 94]
+			}]
+		};
 		if(this.drawPolyLine.datas != null && this.drawPolyLine.datas.length > 0){
-			data.push({
-				type: 'drawPolyLine',
-				data: this.drawPolyLine.datas
-			})
+			for(var i=0;i<this.drawPolyLine.datas.length;i++){
+				var vertices = [];
+				for(var j=0;j<this.drawPolyLine.datas[i].length;j++){
+					vertices.push(this.drawPolyLine.datas[i][j].x)
+					vertices.push(this.drawPolyLine.datas[i][j].y)
+				}
+				var item = JSON.parse(JSON.stringify(objBaseLine));
+				item.linegroup[0].vertices = vertices;
+				data.push(item)
+			}
 		}
 		return data;
 	}
