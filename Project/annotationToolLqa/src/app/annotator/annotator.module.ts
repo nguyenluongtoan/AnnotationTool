@@ -6,7 +6,6 @@ import { MouseWheelDirective } from './control/mousewheel.directive';
 import { HttpModule } from '@angular/http';
 import { WorkComponent }    from './work/work.component';
 import { AnnotatorRoutingModule } from './annotator-routing.module';
-import { AnnotatorComponent } from './annotator/annotator.component';
 
 @NgModule({
   imports: [
@@ -18,8 +17,7 @@ import { AnnotatorComponent } from './annotator/annotator.component';
   declarations: [
     WorkComponent, 
     RatComponent,
-    MouseWheelDirective,
-    AnnotatorComponent
+    MouseWheelDirective
   ]
 })
 export class AnnotatorModule {}
