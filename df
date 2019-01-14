@@ -1,0 +1,167 @@
+[33mcommit 76680fd313eb493588327226ac50f838f40b7cd6[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Thu Dec 6 16:01:00 2018 +0700
+
+    Giao dien quan tri + Annotator
+
+[33mcommit b04bed48b56dad1415671e8afab8581a921fd03c[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Thu Dec 6 15:34:38 2018 +0700
+
+    a
+
+[33mcommit c5e076e47fa89d3ec7855b964d223782ce5068dd[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Dec 5 17:34:54 2018 +0700
+
+    Phan chia quan ly
+
+[33mcommit df92508b01a314629669702d1d0c3a3092c16427[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Fri Nov 23 07:39:58 2018 +0700
+
+    tai file json
+
+[33mcommit e58f3193e084c1cd54728636a8d2be906a9eca97[m
+Author: nguyenluongtoan <toanmta1990@gmail.com>
+Date:   Wed Nov 21 16:50:01 2018 +0700
+
+    fix Ctrl Z and remove object
+
+[33mcommit 17cec8f5e73b29b8c62198d54b9d82b8c0cc9b9a[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 21 08:52:22 2018 +0700
+
+    a
+
+[33mcommit ba1f0b40c341e05c677dc0cca123133d2cf635a4[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Mon Nov 19 01:03:00 2018 +0700
+
+    a
+
+[33mcommit f7d97d9e1c1a7c69b3f0ad15c89d894f4ece0385[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Sun Nov 18 23:04:22 2018 +0700
+
+    asd
+
+[33mcommit 83629de4276207f32f1a30434f2f74af639789eb[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Fri Nov 16 11:32:41 2018 +0700
+
+    a
+
+[33mcommit c4180d43309eae038ee31d2b120ffefcc64471a8[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Fri Nov 16 09:49:38 2018 +0700
+
+    a
+
+[33mcommit c48dc505060817915b77d8117becb3993e1794a7[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Thu Nov 15 10:07:16 2018 +0700
+
+    Draw for multi shape
+
+[33mcommit c560419ceb952cdf5556017854c7f3d7f5180905[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 14 15:56:41 2018 +0700
+
+    search
+
+[33mcommit e18fde3cc87f19e5fda47591da865b0a9c1c1a53[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Sun Nov 11 12:24:20 2018 +0700
+
+    chinh sua mo hinh khac va tiep tuc ve moi
+
+[33mcommit ec9be69a4bb474810f473a303c2390bc4a48dd93[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Sun Nov 11 10:14:29 2018 +0700
+
+    Chuyen anh + zoom
+
+[33mcommit 59041933fba0cf47f7c122db8a3e1749865a56ad[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Sat Nov 10 14:35:54 2018 +0700
+
+    Ve bam theo translate va zoom
+
+[33mcommit 7dbb1fe6babfe574c6dcfe241432ca81ccfd452e[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Thu Nov 8 18:58:39 2018 +0700
+
+     cap nhat tinh nang redo
+
+[33mcommit ec22c790981939376ea93c812cfb3e8f1c0ff3ee[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Thu Nov 8 18:33:50 2018 +0700
+
+    Them tinh nang ve, tai lai data, quay lai trang thai ve
+
+[33mcommit 0452f102666572d691fbfd3067752f30ba4a39cd[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 19:59:44 2018 +0700
+
+    Them tinh nang zoom va di chuyen anh
+
+[33mcommit a0d8dd8762dc129cada12d5674d0c2633fabf67a[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 15:10:20 2018 +0700
+
+    a
+
+[33mcommit 1e17b39a5b2b78d09bb0fe5d8aa55053de4a4cd0[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 12:24:46 2018 +0700
+
+    Add jquery and show image
+
+[33mcommit 20c5cae22a68a5533e4cff0cebe6c2464cb14be3[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 11:24:16 2018 +0700
+
+    chuyen code component cu sang project
+
+[33mcommit ed7f0963dfbd803a7b4f9d2f3ba9833c6683bd84[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 11:21:01 2018 +0700
+
+    chuyen code cu
+
+[33mcommit 5e561d79ed0db2954803561a035daba757d26f7a[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 11:09:35 2018 +0700
+
+    add component control
+
+[33mcommit 565bd1f26716b1ebe8530eb19fe8c968c6977dd6[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 11:02:22 2018 +0700
+
+    add component Image View
+
+[33mcommit ebd2f5822795465b063f0cd4c0c95d28f3b73197[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m, [m[1;32mDeveloop[m[33m)[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 10:52:23 2018 +0700
+
+    Add
+
+[33mcommit 33471341e6af79c9458efd4c057ea81ddcaf3bac[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 10:40:44 2018 +0700
+
+    a
+
+[33mcommit 448ad9fb86197ac82cbc7f89e8509c4c257a9528[m[33m ([m[1;31morigin/Develop[m[33m, [m[1;32mDevelop[m[33m)[m
+Author: DuongNX <duongnx.work@gmail.com>
+Date:   Wed Nov 7 10:21:18 2018 +0700
+
+    AddNewProjectAnotationTool
+
+[33mcommit 7eb589e69030385ce7bab7d25235807b2cdedf69[m
+Author: nguyenluongtoan <toanmta1990@gmail.com>
+Date:   Wed Nov 7 10:14:22 2018 +0700
+
+    Initial commit
