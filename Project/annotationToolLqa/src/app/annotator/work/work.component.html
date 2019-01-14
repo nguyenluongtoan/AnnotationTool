@@ -2,7 +2,7 @@
   <div class="col-md-8 text-center" style="position: relative;overflow: hidden;background: whitesmoke;padding-right: 0;">
     <div style="padding: 10px">
       <div style="position: absolute;right: 0px;border: 2px solid red;">
-        <img id="imageCar" src="assets/images/ks.jpg" width="100px" height="100px">
+        <img id="imageCar" src="http://offshore.infiniq.net/asset/QC1_WORK/180608-pilot-team-continuous/Kia1.2017_10_12_1400.Alpine.1hr/generated/CAM-TFM50/preprocessed/frame_0015000.undistorted.png" width="100px" height="100px">
       </div>
       <canvas (keypress)="KeyPress($event)" tabindex="10" (keyup)="Keyup($event)" (dblclick)="MouseDoubleClick()"
         (mousedown)='MouseDownInCanvas($event)' (mouseup)='MouseUpInCanvas($event)' (mousemove)='MouseMoveInCanvas($event)'
@@ -11,6 +11,7 @@
     </div>
   </div>
   <div class="col-md-4">
+    <button class="btn btn-success" (click)="DrawImage()" style="margin: 10px 0;">Load Image</button>
     <div>
       <p>Draw style</p>
       <div class="row">
