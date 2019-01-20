@@ -24,6 +24,20 @@ import {
 import {
   PropertyForImage
 } from '../class/draw';
+import {
+  Injectable
+} from '@angular/core';
+import {
+  Http,
+  Response,
+  Headers,
+  RequestOptions
+} from '@angular/http';
+import {
+  Observable
+} from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 declare var saveAs: any;
 @Component({
   selector: 'app-annotator',
@@ -49,8 +63,18 @@ export class WorkComponent implements OnInit {
   public properties;
   public keyFilter: string = '';
   public imageChooseDraw;
-  constructor() {
+
+  constructor(private http: Http) {
     this.loadConfig();
+  }
+  LoadDataImage(){
+    this.getJSON().subscribe(data => {
+      this.listImages = data;
+    }, error => console.log(error));
+  }
+  public getJSON(): Observable < any > {
+    return this.http.get("/assets/images.json")
+      .map((res: any) => res.json());
   }
   ngOnInit() {
     // lấy đối tượng cancas thông qua thuộc tính id (lấy từ trang html work.component.html)
@@ -82,7 +106,7 @@ export class WorkComponent implements OnInit {
     this.imageChooseDraw = obj;
     // khởi tạo lại các thông số điêu khiển (draw.ts)
     ControlDraw.RefreshControl();
-    $("#imageCar").attr("src", obj.fakePath);
+    $("#imageCar").attr("src", obj.Image);
     Draw.xStart = 0;
     Draw.yStart = 0;
     var img = new Image();
@@ -92,6 +116,7 @@ export class WorkComponent implements OnInit {
     this.DrawImage(true);
   }
   // hàm lấy danh sách image trên local
+
   ShowListImage() {
     var data = $("#fileUpload").val();
     if (data != null && data != "") {
@@ -100,6 +125,7 @@ export class WorkComponent implements OnInit {
     }
     $("#fileUpload").val('')
   }
+
   // hàm tìm kiếm lọc hình ảnh theo tên
   FilterData(searchValue: string) {
     this.listImages = this.listImagesBase.filter(x => x.webkitRelativePath.indexOf(searchValue) >= 0)
